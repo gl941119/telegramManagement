@@ -1,0 +1,17 @@
+$basicColor: #001e32;
+$textColor: #65748B;
+$timeColor: #B2C0D1;
+$activeColor: #6E7D92;
+$anchorColor: #5A95CC;
+
+%titleClass {
+    &::before {
+        content: '';
+        display: table;
+    }
+    & > h3 {
+        margin: 10px 0;
+        color: $textColor;
+        font-size: 24px;
+    }
+}

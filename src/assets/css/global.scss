@@ -1,0 +1,158 @@
+@import './variable.scss';
+.bierinc-header {
+    background: $basicColor;
+    border: 1px solid #3e474d;
+    &-left {
+        height: 100%;
+    }
+}
+.bierinc-logo-content {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    & > div {
+        margin-left: 10px;
+        line-height: 36px;
+        color: #fff;
+        font-size: 22px;
+    }
+}
+.bierinc-lanuage {
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    &-icon > img {
+        width: 30px;
+        margin-right: 20px;
+    }
+    &-drop {
+        color: #fff;
+        font-size: 15px;
+        margin-right: 50px;
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}
+.active {
+    display: none;
+}
+
+// bierinc-main-container layout
+.bierinc-main-container {
+    height: calc(100vh - 60px);
+    &-aside {
+        height: 100%;
+        &-menu {
+            height: 100%;
+            background: #393d49;
+
+            &-li {
+                text-align: center;
+                height: 56px;
+                line-height: 56px;
+                padding: 0 20px;
+                cursor: pointer;
+                transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+                box-sizing: border-box;
+                color: rgb(196, 197, 201);
+                &:hover {
+                    background-color: rgb(46, 49, 58);
+                }
+                &.router-link-active {
+                    background-color: rgb(46, 49, 58);
+                    color: #fff;
+                    & i.el-icon-menu {
+                        color: #2ec991;
+                    }
+                }
+            }
+        }
+    }
+    &-view {
+        background: #edf0f5;
+    }
+}
+
+// material nav
+.material-content {
+    &-top {
+        margin: 20px 0;
+        &-middle {
+            text-align: center;
+            &-input {
+                width: 30%;
+                margin-right: 50px;
+            }
+            &-span {
+                font-size: 14px;
+                color: $textColor;
+            }
+            &-select {
+                width: 100px;
+            }
+        }
+        &-right {
+            text-align: right;
+        }
+    }
+}
+
+// table header
+.el-table .custom-header {
+    background-color: $activeColor;
+    color: #fff;
+}
+
+// data management analysis
+.data-analysis {
+    &-header {
+        margin: 30px 0;
+        padding: 15px 30px;
+        background: #FFF;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        &-item{
+            padding: 10px 30px;
+            border-right: 1px solid #ccc;
+            width: 25%;
+            font-size: 14px;
+            color: $textColor;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+            &>span:first-child{
+                font-size: 28px;
+                color: #60C6DF;
+            }
+            &:last-child{
+                border-right: none;
+            }
+        }
+    }
+    &-body{
+        margin-bottom: 20px;
+        &-text{
+            font-size: 20px;
+            color: $textColor;
+            font-weight: bold;
+            margin-right: 100px;
+        }
+    }
+}
+
+// title
+.bierinc-sub-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 15px;
+    & > h3 {
+        color: $textColor;
+        font-size: 24px;
+        margin: 20px 0;
+    }
+}
