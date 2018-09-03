@@ -71,8 +71,8 @@
           </el-table-column>
           <el-table-column label="机器人序号" width="700" class-name="tableCol">
             <template slot-scope="scope">
-              <el-button type="primary" size="mini" @click="openRobotBtn(scope.row)">开启机器人</el-button>
-              <el-button type="primary" size="mini" @click="closeRobotBtn(scope.row)">关闭机器人</el-button>
+              <el-button type="primary" size="mini" @click="openRobotBtn(scope.row)">开启客服</el-button>
+              <el-button type="primary" size="mini" @click="closeRobotBtn(scope.row)">关闭客服</el-button>
               <el-button type="primary" size="mini" @click="importPhoneBtn(scope.row)">导入手机号</el-button>
               <!--<dialog-groupsyn class="tableClass">群成员同步</dialog-groupsyn>-->
               <el-button  type="primary" size="mini" @click="groupsyn(scope.row)">群同步</el-button>
@@ -236,9 +236,6 @@
                 this.websocketsend("UpgradeApplication", {dname: this.selectDate,msg:res.data.url}) //升级APP
               }
             })
-
-
-
             break;
           case 'checkoutUser'://切换电报账号
             this.checkoutuserDialog = true
@@ -277,11 +274,11 @@
 
 
       /************************************************************************************列表按钮事件***********************************************/
-      //   开启机器人
+      //   开启客服
       openRobotBtn(row) {
         this.websocketsend("START_MONITOR", {dname: [row.sn]})
       },
-      // 关闭机器人
+      // 关闭客服
       closeRobotBtn(row) {
         this.websocketsend("STOP_MONITOR", {dname: [row.sn]})
       },

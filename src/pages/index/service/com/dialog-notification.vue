@@ -1,12 +1,14 @@
 <template>
   <el-dialog title="消息推送" :visible.sync="dialogFormVisible" width="700px">
     <!--素材上传组件  type:1群2用户-->
-    <com-materialupdate @backdefinddata="updataBackdata" @backSelectData="backSelectData" @radioStatus="radioStatus" :type="'1'"></com-materialupdate>
+    <div style="border-bottom: 1px solid #b4bccc;padding-bottom: 20px;">
+      <com-materialupdate @backdData="backdData" :type="'1'"></com-materialupdate>
+    </div>
     <el-row style="border-bottom: 1px solid #b4bccc;text-align: left;height: 100px;line-height: 50px">
       <div>
-        <el-radio v-model="radio2" label="2">指定人</el-radio>
+        <el-radio v-model="radio2" label="2">指定人:</el-radio>
         <!--<com-select :options="options" :placeholder="'请选择群名'"></com-select>-->
-        <el-button type="primary" @click="innerVisible = true">指定人</el-button>
+        <el-button type="primary" :disabled="radio2 == 1" @click="innerVisible = true">指定人</el-button>
         <el-dialog
           width="60%"
           title="指定"
@@ -14,7 +16,7 @@
           append-to-body>
           <el-tabs v-model="activeName" @tab-click="handleClick">
             <el-tab-pane label="通讯录好友" name="addressBook">
-              <el-table :data="tableData" ref="multiple"
+              <el-table :data="tableData" ref="multipleAddress"
                         class="mt30"
                         @select="handleRowChange"
                         @selection-change="handleSelectionChange"
@@ -29,7 +31,7 @@
                          @handleCurrentChange="handleCurrentChange"></com-pages>
             </el-tab-pane>
             <el-tab-pane label="聊天窗口对象" name="group">
-              <el-table :data="group_tableData" ref="b"
+              <el-table :data="group_tableData" ref="multipleGroup"
                         class="mt30"
                         @select="handleRowChange"
                         @selection-change="handleSelectionChange"
@@ -54,9 +56,8 @@
 
             </el-tab-pane>
           </el-tabs>
-
           <div slot="footer" class="dialog-footer">
-            <el-button @click="innerVisible = false">取 消</el-button>
+            <!--<el-button @click="innerVisible = false">取 消</el-button>-->
             <el-button type="primary" @click="innerVisible = false">确定</el-button>
           </div>
         </el-dialog>
@@ -67,8 +68,8 @@
       <el-col :span="6" style="line-height: 40px;">每次推送人数</el-col>
       <el-col :span="18">
         <el-input v-model="pushStart" style="width: 50px"></el-input>
-        <!--~-->
-        <!--<el-input v-model="pushEnd" style="width: 50px"></el-input>-->
+        ~
+        <el-input v-model="pushEnd" style="width: 50px"></el-input>
       </el-col>
     </el-row>
     <div slot="footer" class="dialog-footer">
@@ -102,18 +103,12 @@
         }
       },
     },
-    watch: {
-      Message: function () {
-
-
-      }
-    },
     data() {
       return {
         radio: '1',
         radio2: '1',
         value: undefined,
-        util:new Util(),
+        util: new Util(),
         options: [],
         textarea: undefined,
         title: '附件上传',
@@ -121,29 +116,20 @@
         pushEnd: undefined,
         innerVisible: false,
         activeName: 'addressBook',
-        tableData: [],
-        addressBook_selected: [],
-        group_selected: [],
-
+        tableData: [],//通讯录
         addressBook_total: 0,
+        addressBook_selected: [],
         addressBook_page: 1,
         addressBook_pageSize: 10,
 
-        group_tableData: [],
+        group_tableData: [],//群
+        group_selected: [],
         group_total: 0,
         group_page: 1,
         group_pageSize: 10,
 
-        selected_tableData: [],
-
-        not_addSelect: [],
-        backdata: null,
-        Material:undefined,
-        MaterialRadio:'1',
-        MaterialSlect:undefined,
-
-        selectData:[]
-
+        selected_tableData: [],//已经选择列表数据
+        Material: null,
       }
     },
     // watch:{
@@ -153,156 +139,114 @@
     // },
 
     mounted() {
-      this.getDeviceUserByUid()//通讯录好友
-      this.getgroupUserByUid()//群好友
+      this.getDeviceUserByUid(2);//通讯录好友
+      this.getDeviceUserByUid(1)//群好友
     },
     methods: {
-      updataBackdata(val) {
-        this.backdata = val
+      backdData(val) {
+        this.Material = val
       },
       //消息推送
       notificationBtn() {
-        console.log(this.MaterialRadio)
-        let contactData =  this.addressBook_selected.map(item=>{
-          return item.userId
-        })
-        let dialogData =  this.group_selected.map(item=>{
-          return item.userId
-        })
+        //数据处理
+        console.log(this.ArraychangeObject(this.addressBook_selected));
 
-        let data,info
-        if(this.MaterialRadio=='1'){
-          if(!this.MaterialSlect) return ;
-          let {
-            photo1Url,
-            photo2Url,
-            photo3Url
-          }=this.MaterialSlect;
-          let photo=[photo1Url, photo2Url, photo3Url].filter(item=>{
-            return item!=null
-          })
-          info = {
-            "dname": [this.Message.sn],
-            "msg": {
-              "text": this.MaterialSlect.content,
-              photo,
-              "video":this.MaterialSlect.videoUrl,
-              "pushTo": {
-                "contact": this.radio2 == '1'?  '-1':contactData, // 推送通讯录好友，内容对应userId，如果只有一个元素-1则表示推送全部通讯录好友
-                "dialog": this.radio2 == '1'?   '-1':dialogData, // 推送聊天窗口对象，内容对应userId，如果只有一个元素-1则表示推送全部的聊天窗口对象
-              },
-              batch:this.pushStart, // 每批推送的对象数量
-              "interval": 900 // 批次之间的推送间隔，单位秒
-            }
-          }
+
+        let contact,  // 推送通讯录好友，内容对应userId，如果只有一个元素-1则表示推送全部通讯录好友
+          dialog;     // 推送聊天窗口对象，内容对应userId，如果只有一个元素-1则表示推送全部的聊天窗口对象
+        if (this.radio2 == '2') {
+          contact = this.ArraychangeObject(this.addressBook_selected).map(item => {
+            return item.userId
+          });
+          dialog = this.ArraychangeObject(this.group_selected).map(item => {
+            return item.userId
+          });
+        } else if (this.radio2 == '1') {
+          contact = '-1';
+          dialog = '-1';
         }
-        if(this.MaterialRadio=='2'){
-          if(!this.MaterialSlect) return ;
-          let {
-            photo1Url,
-            photo2Url,
-            photo3Url
-          }=this.backdata;
-          let photo=[photo1Url, photo2Url, photo3Url].filter(item=>{
-            return item!=null
-          })
-          info = {
-            "dname": [this.Message.sn],
-            "msg": {
-              "text": this.backdata.content,
-              photo,
-              "video":this.backdata.videoUrl,
-              "pushTo": {
-                "contact": this.radio2=='1'?  '-1':contactData, // 推送通讯录好友，内容对应userId，如果只有一个元素-1则表示推送全部通讯录好友
-                "dialog":  this.radio2=='1'?  '-1':dialogData, // 推送聊天窗口对象，内容对应userId，如果只有一个元素-1则表示推送全部的聊天窗口对象
-              },
-              batch:this.pushStart, // 每批推送的对象数量
-              "interval": 900 // 批次之间的推送间隔，单位秒
-            }
+        // 图片数据处理
+        if (!this.Material) return;
+        let {photo1Url, photo2Url, photo3Url} = this.Material;
+        let photo = [photo1Url, photo2Url, photo3Url].filter(item => {
+          return item != null
+        });
+        let info = {
+          "dname": [this.Message.sn],
+          "msg": {
+            "text": this.Material.content,
+            photo,
+            "video": this.Material.videoUrl,
+            "pushTo": {
+              contact,
+              dialog,
+            },
+            batch:this.util.random(this.pushStart, this.pushEnd), // 每批推送的对象数量
+            "interval": 900 // 批次之间的推送间隔，单位秒
           }
-
-        }
-
-        this.$emit('backData',info)
+        };
+        console.log('notification=>', info);
+        this.$emit('backData', info);//传回
         this.dialogFormVisible = false
       },
       handleRowChange(selection, row) {
-        if (this.activeName == 'addressBook') {
-          let val = undefined;
-          this.addressBook_selected.forEach((item, index) => {
-            if (item.userMobile == row.userMobile) {
-              val = index;
-              return;
-            }
-          })
-          if (!val) {
-            this.addressBook_selected.push(row)
-          } else {
-            this.addressBook_selected.splice(val, 1)
-          }
-          console.log('book=>',this.addressBook_selected)
-        }
-        if (this.activeName == 'group') {
-          let val = undefined;
-          this.group_selected.forEach((item, index) => {
-            if (item.userMobile == row.userMobile) {
-              val = index;
-              return;
-            }
-          })
-          if (!val) {
-            this.group_selected.push(row)
-          } else {
-            this.group_selected.splice(val, 1)
-          }
-          console.log('group=>',this.group_selected)
-        }
+
       },
       //选项卡事件
-      handleClick(tab, event) {
+      handleClick(tab) {
         if (tab.name == "selected") {
-          this.selected_tableData = this.addressBook_selected.concat(this.group_selected)
+          let addressBook = this.ArraychangeObject(this.addressBook_selected),
+            group = this.ArraychangeObject(this.group_selected);
+          this.selected_tableData = addressBook.concat(group)
         }
-
+      },
+      //处理数据格式问题
+      ArraychangeObject(arr) {
+        if (arr.length == 0) return;
+        arr = arr.filter(item => {//去空
+          return item
+        });
+        let result = [];
+        arr.forEach(item => {
+          item.forEach(val => {
+            result.push(val)
+          })
+        });
+        return result
       },
       //列表勾选
       handleSelectionChange(val) {
-        console.log(val)
-
-        // this.selectData = val
-        // if (this.activeName == 'addressBook') {
-        //   this.addressBook_selected = val
-        // }
-        // if (this.activeName == 'group') {
-        //   this.group_selected = val
-        // }
-
+        if (this.activeName == 'addressBook') {
+          this.addressBook_selected[this.addressBook_page - 1] = val
+        }
+        if (this.activeName == 'group') {
+          this.group_selected[this.group_page - 1] = val
+        }
       },
       //分页器事件
       handleSizeChange(val) {
         if (this.activeName == 'addressBook') {
           this.addressBook_pageSize = val;
-          this.getDeviceUserByUid()
+          this.getDeviceUserByUid(2)
         }
         if (this.activeName == 'group') {
           this.group_pageSize = val;
-          this.getgroupUserByUid()
+          this.getDeviceUserByUid(1)
         }
 
       },
       handleCurrentChange(val) {
-        // console.log(!Cache.getSession('notSelect'))
         if (this.activeName == 'addressBook') {
           this.addressBook_page = val;
-          this.getDeviceUserByUid()
+          this.getDeviceUserByUid(2)
         }
         if (this.activeName == 'group') {
           this.group_page = val;
-          this.getgroupUserByUid()
+          this.getDeviceUserByUid(1)
         }
       },
       //获取通讯录好友
-      getDeviceUserByUid() {
+      getDeviceUserByUid(type) {
         // console.log('info',this.Message)
         if (!this.Message.phone) return;
         Request.requestHandle({
@@ -312,63 +256,90 @@
             pageSize: this.addressBook_pageSize,
             uid: this.uid(),// 运营账号id
             Mobile: this.Message.phone,// 手机号
-            userType: 2,// 1当前聊天窗口,2通讯录好友
+            userType: type,// 1当前聊天窗口,2通讯录好友
           },
           type: 'get',
         }, res => {
           if (res.success == 1) {
-            console.log(this.addressBook_selected, res.data)
-            let a = []
-            this.addressBook_selected.forEach((item, index) => {
-              if (item.userMobile == res.data[index].userMobile) {
-                a.push(res.data[index])
+            if (type == 2) {// 1当前聊天窗口,2通讯录好友
+              this.tableData = res.data;
+              this.memory(res.data);//翻页记忆
+              this.addressBook_total = res.total
+            }
+            if (type == 1) {// 1当前聊天窗口,2通讯录好友
+              this.group_tableData = res.data;
+              this.group_memory(res.data);
+              this.group_total = res.total;
+            }
+          }
+        })
+      },
+      memory(res) {//通讯录翻页记忆
+        let rows = [],
+          arr = this.addressBook_selected[this.addressBook_page - 1];
+        if (arr) {
+          res.forEach(item => {
+            arr.forEach(val => {
+              if (item.userMobile == val.userMobile) {
+                rows.push(item)
               }
             })
-            this.test(a)
-            this.tableData = res.data
-            this.addressBook_total = res.total
-          }
-        })
-      },
-      test(rows) {
+          })
+        }
         setTimeout(() => {
           rows.forEach(row => {
-            this.$refs.multiple.toggleRowSelection(row, true);
+            this.$refs.multipleAddress.toggleRowSelection(row, true);
           });
-        }, 1000)
-
+        }, 0)
+      },
+      group_memory(res) {//群好友翻页记忆
+        let rows = [],
+          arr = this.group_selected[this.group_page - 1];
+        if (arr) {
+          res.forEach(item => {
+            arr.forEach(val => {
+              if (item.userMobile == val.userMobile) {
+                rows.push(item)
+              }
+            })
+          })
+        }
+        setTimeout(() => {
+          rows.forEach(row => {
+            this.$refs.multipleGroup.toggleRowSelection(row, true);
+          });
+        }, 0)
       },
       //获取群好友
-      getgroupUserByUid() {
-        // console.log('info',this.Message)
-        if (!this.Message.phone) return;
-        Request.requestHandle({
-          url: 'getDeviceUserByUid',
-          data: {
-            page: this.group_page,
-            pageSize: this.group_pageSize,
-            uid: this.uid(),// 运营账号id
-            Mobile: this.Message.phone,// 手机号
-            userType: 1,// 1当前聊天窗口,2通讯录好友
-          },
-          type: 'get',
-        }, res => {
-          if (res.success == 1) {
-            this.group_tableData = res.data;
-            this.group_total = res.total;
-          }
-        })
-      },
+      // getgroupUserByUid() {
+      //   // console.log('info',this.Message)
+      //   if (!this.Message.phone) return;
+      //   Request.requestHandle({
+      //     url: 'getDeviceUserByUid',
+      //     data: {
+      //       page: this.group_page,
+      //       pageSize: this.group_pageSize,
+      //       uid: this.uid(),// 运营账号id
+      //       Mobile: this.Message.phone,// 手机号
+      //       userType: 1,// 1当前聊天窗口,2通讯录好友
+      //     },
+      //     type: 'get',
+      //   }, res => {
+      //     if (res.success == 1) {
+      //       this.group_tableData = res.data;
+      //       this.group_total = res.total;
+      //     }
+      //   })
+      // },
       timeMessage(val) {
         // console.log(val)
       },
-      radioStatus(val){
-        this.MaterialRadio =val
-      },
-      backSelectData(val){
-        this.MaterialSlect = val
-      },
+      // radioStatus(val) {
+      //   this.MaterialRadio = val
+      // },
+      backSelectData(val) {
 
+      },
 
 
     }

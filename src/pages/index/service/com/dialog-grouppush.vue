@@ -1,9 +1,9 @@
 <template>
   <div>
-    <el-dialog title="群推送" :visible.sync="dialogFormVisible" width="500px" style="text-align: left">
+    <el-dialog title="群消息推送" :visible.sync="dialogFormVisible" width="500px" style="text-align: left">
       <el-row>
         <el-col :span="6">
-          <el-radio v-model="radio" label="1">选择群组:</el-radio>
+          <p>选择群组:</p>
         </el-col>
         <el-col :span="18">
           <el-select v-model="Value" placeholder="请选择">

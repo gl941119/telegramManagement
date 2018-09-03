@@ -66,6 +66,9 @@ export default class Util {
       return val
     }
     random(n,m){
+      if(n==undefined||m == undefined) return ;
+      n= parseInt(n);
+      m=parseInt(m);
      return Math.floor(Math.random()*(m-n)+n)
     }
 }

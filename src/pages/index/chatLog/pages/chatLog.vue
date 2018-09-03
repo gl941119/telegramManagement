@@ -41,9 +41,16 @@
           <p v-if="scope.row.objectType==2">人</p>
         </template>
       </el-table-column>
+      <el-table-column prop="chatTitle" label="名称"></el-table-column>
       <el-table-column prop="chatAccount" label="聊天账号"></el-table-column>
       <el-table-column prop="replyAccount" label="回复账号"></el-table-column>
-      <el-table-column prop="replyContent" label="回复内容"></el-table-column>
+      <el-table-column  label="回复内容"  width="300px">
+        <template slot-scope="scope">
+          <p v-if="scope.row.replyType==1">{{scope.row.replyContent}}</p>
+          <img v-if="scope.row.replyType==2" :src="scope.row.replyContent" alt="" style="max-width: 300px;max-height: 100px;"/>
+          <video v-if="scope.row.replyType==3" :src="scope.row.replyContent" controls style="max-width: 300px;max-height: 100px;"></video>
+        </template>
+      </el-table-column>
       <el-table-column prop="replyTime" label="回复时间"></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">

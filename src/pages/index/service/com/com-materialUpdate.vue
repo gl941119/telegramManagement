@@ -4,8 +4,16 @@
       <el-col :span="6">
         <el-radio v-model="radio" label="1">选择素材:</el-radio>
       </el-col>
-      <el-col :span="18" >
-        <com-select :options="options" :placeholder="'请选择群名'" @change="selectHandle" style="margin-top: -8px"></com-select>
+      <el-col :span="18">
+        <!--<com-select :options="options" :disabled="disabled" :placeholder="'请选择群名'" @change="selectHandle" style="margin-top: -8px"></com-select>-->
+        <el-select :disabled="radio == 2" @change="selectHandle" v-model="value" style="width: 250px;margin-top: -10px;">
+          <el-option
+            v-for="item in options"
+            :key="item.id"
+            :label="item.title"
+            :value="item.id">
+          </el-option>
+        </el-select>
       </el-col>
     </el-row>
     <el-row style="margin-top: 20px;">
@@ -23,10 +31,10 @@
         </el-input>
         <div style="margin: 20px 0 10px;">
           <com-updateimg @fileList="fileList" style="margin-bottom: 10px"></com-updateimg>
-          <com-update :title="title"  @videoUrl="videoUrl" style="float: left"></com-update>
+          <com-update :title="title" @videoUrl="videoUrl" style="float: left"></com-update>
           <div style="margin-left: 10px;float: left">
-          <el-button  @click="saveMaterial" style="display: block">保存自定义素材</el-button>
-          <el-button  @click="notsaveMaterial" style="margin: 10px 0">不保存自定义素材</el-button>
+            <el-button @click="saveMaterial" style="display: block">保存自定义素材</el-button>
+            <el-button @click="backDataEvent" style="margin: 10px 0">不保存自定义素材</el-button>
           </div>
         </div>
       </el-col>
@@ -41,27 +49,29 @@
 
   export default {
     name: "com-meterialUpdate",
-    props:['type'],
-    data(){
+    props: ['type'],
+    data() {
       return {
-        options:[],
-        radio:'1',
-        textarea:undefined,
-        title:'视频上传',
-        inputTitle:undefined,
-        video:undefined,
-        imgUrlArray:[]
+        options: [],
+        radio: '1',
+        textarea: undefined,
+        title: '视频上传',
+        inputTitle: undefined,
+        video: undefined,
+        imgUrlArray: [],
+        value: undefined,
       }
     },
-    watch:{
-      radio:function (val) {
-        this.$emit('radioStatus',val)
-      }
+    watch: {
+      // radio:function (val) {
+      //   this.$emit('radioStatus',val)
+      // }
     },
     mounted() {
       this.RequestData()
     },
     methods: {
+      //请求素材
       RequestData() {
         Request.requestHandle({
           url: 'queryFodderList',
@@ -72,55 +82,44 @@
           type: 'get'
         }, res => {
           this.options = res.data
-
         })
       },
       //保存自定义素材
-      saveMaterial(){
-        let arr = [null,null,null];//对返回的图片处理
-        this.imgUrlArray.forEach((item,index)=>{
+      saveMaterial() {
+        let arr = [null, null, null];//对返回的图片处理
+        this.imgUrlArray.forEach((item, index) => {
           arr[index] = item
         })
         Request.requestHandle({
-          url:'addMaterial',
-          data:{
-            "uid":this.uid(),// 子账户uid
-              "title":this.inputTitle,
-          "materialType": this.type,
-        "content": this.textarea,
-          "photo1Url": arr[0],
-          "photo2Url": arr[1],
-          "photo3Url": arr[2],
-          "videoUrl": this.video
+          url: 'addMaterial',
+          data: {
+            "uid": this.uid(),// 子账户uid
+            "title": this.inputTitle,
+            "materialType": this.type,
+            "content": this.textarea,
+            "photo1Url": arr[0],
+            "photo2Url": arr[1],
+            "photo3Url": arr[2],
+            "videoUrl": this.video
           },
-          type:'post',
-          flag:true
-        },res=>{
-          if(res.success==1){
-            this.message('保存成功','success')
+          type: 'post',
+          flag: true
+        }, res => {
+          if (res.success == 1) {
+            this.message('保存成功', 'success')
           }
         })
-        let val={
-          "uid":this.uid(),// 子账户uid
-          "title":this.inputTitle,
-          "materialType": this.type,
-          "content": this.textarea,
-          "photo1Url": arr[0],
-          "photo2Url": arr[1],
-          "photo3Url": arr[2],
-          "videoUrl": this.video
-        }
-        this.$emit('backdefinddata',val)
-
+        this.backDataEvent() // 素材数据传回
       },
-      notsaveMaterial(){
-        let arr = [null,null,null];//对返回的图片处理
-        this.imgUrlArray.forEach((item,index)=>{
+      //数据回传事件
+      backDataEvent() {
+        let arr = [null, null, null];//对返回的图片处理
+        this.imgUrlArray.forEach((item, index) => {
           arr[index] = item
         })
-        let val={
-          "uid":this.uid(),// 子账户uid
-          "title":this.inputTitle,
+        let val = {
+          "uid": this.uid(),// 子账户uid
+          "title": this.inputTitle,
           "materialType": this.type,
           "content": this.textarea,
           "photo1Url": arr[0],
@@ -128,31 +127,31 @@
           "photo3Url": arr[2],
           "videoUrl": this.video
         }
-        this.$emit('backdefinddata',val)
+        console.log(val)
+        this.$emit('backdData', val)
       },
       // 视频组件传回url
-      videoUrl(res){
+      videoUrl(res) {
         this.video = res
       },
       //updata组件返回的上传图片
-      fileList(fileList){
+      fileList(fileList) {
 
-        this.imgUrlArray=fileList
+        this.imgUrlArray = fileList
       },
       //选择器事件
-      selectHandle(val){
+      selectHandle(val) {
         Request.requestHandle({
           url: 'getMaterialWithId',
           data: {
-            id:val
+            id: val
           },
           type: 'get',
-        },res=>{
-          this.$emit('backSelectData',res.data)
+        }, res => {
+          this.$emit('backdData', res.data)
         })
+      },
 
-
-      }
 
     }
   }

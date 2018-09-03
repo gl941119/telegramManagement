@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="overflow: hidden;">
     <el-form>
       <el-form-item label="查询绑定账号">
         <el-select v-model="optionsValue" placeholder="请选择活动区域">
@@ -12,7 +12,7 @@
         </el-select>
       </el-form-item>
     </el-form>
-    <div slot="footer" class="dialog-footer" style="margin-top: 100px">
+    <div slot="footer" class="dialog-footer" style="margin-top: 50px;float: right">
       <el-button @click="$emit('closeDialog',false)">取 消</el-button>
       <el-button type="primary" @click="updatacheckoutUser">确 定</el-button>
     </div>
