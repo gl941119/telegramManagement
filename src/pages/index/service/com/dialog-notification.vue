@@ -132,12 +132,6 @@
         Material: null,
       }
     },
-    // watch:{
-    //   dialogFormVisible:function (val) {
-    //     console.log(this.clickData)
-    //   }
-    // },
-
     mounted() {
       this.getDeviceUserByUid(2);//通讯录好友
       this.getDeviceUserByUid(1)//群好友
@@ -150,8 +144,6 @@
       notificationBtn() {
         //数据处理
         console.log(this.ArraychangeObject(this.addressBook_selected));
-
-
         let contact,  // 推送通讯录好友，内容对应userId，如果只有一个元素-1则表示推送全部通讯录好友
           dialog;     // 推送聊天窗口对象，内容对应userId，如果只有一个元素-1则表示推送全部的聊天窗口对象
         if (this.radio2 == '2') {
@@ -162,21 +154,17 @@
             return item.userId
           });
         } else if (this.radio2 == '1') {
-          contact = '-1';
-          dialog = '-1';
+          contact = ['-1'];
+          dialog = ['-1'];
         }
         // 图片数据处理
         if (!this.Material) return;
-        let {photo1Url, photo2Url, photo3Url} = this.Material;
-        let photo = [photo1Url, photo2Url, photo3Url].filter(item => {
-          return item != null
-        });
         let info = {
           "dname": [this.Message.sn],
           "msg": {
-            "text": this.Material.content,
-            photo,
-            "video": this.Material.videoUrl,
+            "text": this.Material.text,
+            photo:this.Material.photo,
+            "video": this.Material.video,
             "pushTo": {
               contact,
               dialog,
@@ -186,7 +174,7 @@
           }
         };
         console.log('notification=>', info);
-        this.$emit('backData', info);//传回
+        this.$emit('backData',"PUSH_MESSAGE_TO_SOMEONE",info);//个人消息推送传回
         this.dialogFormVisible = false
       },
       handleRowChange(selection, row) {
@@ -310,37 +298,6 @@
           });
         }, 0)
       },
-      //获取群好友
-      // getgroupUserByUid() {
-      //   // console.log('info',this.Message)
-      //   if (!this.Message.phone) return;
-      //   Request.requestHandle({
-      //     url: 'getDeviceUserByUid',
-      //     data: {
-      //       page: this.group_page,
-      //       pageSize: this.group_pageSize,
-      //       uid: this.uid(),// 运营账号id
-      //       Mobile: this.Message.phone,// 手机号
-      //       userType: 1,// 1当前聊天窗口,2通讯录好友
-      //     },
-      //     type: 'get',
-      //   }, res => {
-      //     if (res.success == 1) {
-      //       this.group_tableData = res.data;
-      //       this.group_total = res.total;
-      //     }
-      //   })
-      // },
-      timeMessage(val) {
-        // console.log(val)
-      },
-      // radioStatus(val) {
-      //   this.MaterialRadio = val
-      // },
-      backSelectData(val) {
-
-      },
-
 
     }
   }

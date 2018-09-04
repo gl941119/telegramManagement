@@ -26,9 +26,9 @@
           <el-button type="info" @click="ifSelect('updataBtn')">升级服务</el-button>
           <el-button type="info" @click="ifSelect('updataTelegramBtn')">升级APP</el-button>
           <el-button type="info" @click="ifSelect('checkoutUser')">切换电报账号</el-button>
-          <el-button type="info" @click="ifSelect('openClose')">开关代理</el-button>
-          <el-button type="info" @click="ifSelect('measurement')">网络监测</el-button>
-          <el-button type="info" @click="tiemStatus=true">定时任务</el-button>
+          <el-button type="info" @click="ifSelect('openClose')">开启代理</el-button>
+          <!--<el-button type="info" @click="ifSelect('measurement')">网络监测</el-button>-->
+          <!--<el-button type="info" @click="tiemStatus=true">定时任务</el-button>-->
           <!--<el-button type="info" @click="">停止操作</el-button>-->
           <p>个人操作</p>
           <el-button type="info" @click="pushPlan">用户信息同步</el-button>
@@ -38,9 +38,7 @@
           <!--<el-button type="info" @click="">机器人互聊</el-button>-->
           <!--<el-button type="info" @click="">停止机器人互聊</el-button>-->
           <p>群操作</p>
-          <el-button type="info" @click="clearGroupBtn">清理死号</el-button>
           <el-button type="info" @click="joinGroupStatus=true">加入群</el-button>
-
           <!--定时任务弹窗-->
           <dialog-timedtask :Message="Message" :status="tiemStatus"
                             @changeDialog="tiemStatus=false"></dialog-timedtask>
@@ -51,7 +49,8 @@
             </com-checkoutuser>
           </el-dialog>
           <!--清理死号-->
-          <dialog-clearDieUser :differ="clearDiaDiffer" :Message="Message" :status="clearDiaStatus"
+          <dialog-clearDieUser :differ="clearDiaDiffer" :selectTable="select" :status="clearDiaStatus"
+                               v-if="clearDiaStatus"  :Message="Message" @backData="backData"
                                @changeDialog="clearDiaStatus=false"></dialog-clearDieUser>
           <!--加入群t弹窗-->
           <dialog-joingroup :Message="Message" :status="joinGroupStatus"
@@ -69,27 +68,28 @@
         >
           <el-table-column type="selection" width="55">
           </el-table-column>
-          <el-table-column label="机器人序号" width="700" class-name="tableCol">
+          <el-table-column label="控制台" width="700" class-name="tableCol">
             <template slot-scope="scope">
               <el-button type="primary" size="mini" @click="openRobotBtn(scope.row)">开启客服</el-button>
               <el-button type="primary" size="mini" @click="closeRobotBtn(scope.row)">关闭客服</el-button>
               <el-button type="primary" size="mini" @click="importPhoneBtn(scope.row)">导入手机号</el-button>
               <!--<dialog-groupsyn class="tableClass">群成员同步</dialog-groupsyn>-->
-              <el-button  type="primary" size="mini" @click="groupsyn(scope.row)">群同步</el-button>
+              <el-button type="primary" size="mini" @click="groupsyn(scope.row)">群同步</el-button>
               <el-button type="primary" size="mini" @click="letterBtn(scope.row)">群成员私信</el-button>
               <el-button type="primary" size="mini" @click="buildBtn(scope.row)">新建群</el-button>
               <el-button type="primary" size="mini" @click="groupEditBtn(scope.row)">群信息修改</el-button>
               <!--<el-button type="primary" size="mini" @click="groupnotice(scope.row)">群公告</el-button>-->
               <el-button type="primary" size="mini" @click="groupPush(scope.row)">群消息推送</el-button>
               <el-button type="primary" size="mini" @click="notificationBtn(scope.row)">个人消息推送</el-button>
+              <el-button type="primary" size="mini" @click="clearGroupBtn(scope.row)">清理群死号</el-button>
             </template>
           </el-table-column>
           <el-table-column prop="sn" label="设备号"></el-table-column>
           <el-table-column prop="phone" label="手机号"></el-table-column>
           <el-table-column prop="username" label="用户名"></el-table-column>
           <el-table-column prop="onlineStatus" label="任务状态"></el-table-column>
-          <el-table-column label="设备状态"></el-table-column>
-          <el-table-column label="机器人状态"></el-table-column>
+          <!--<el-table-column label="设备状态"></el-table-column>-->
+          <!--<el-table-column label="机器人状态"></el-table-column>-->
         </el-table>
         <!--个人消息推送dialog-->
         <dialog-notification :Message="Message" :status="notificationStatus"
@@ -97,10 +97,11 @@
                              v-if="notificationStatus" @backData="backData"></dialog-notification>
         <!--新建群-->
         <dialog-buildgroup :Message="Message" :status="buildStatus"
+                           v-if="buildStatus"  @backData="backData"
                            @changeDialog="buildStatus=false"></dialog-buildgroup>
         <!--群成员私信-->
-        <dialog-privateletter :Message="Message" :status="letterStatus"
-                              @changeDialog="letterStatus=false"></dialog-privateletter>
+        <dialog-privateletter :Message="Message" :status="letterStatus" v-if="letterStatus"
+                              @changeDialog="letterStatus=false" @backData="backData"></dialog-privateletter>
         <!--群信息修改-->
         <el-dialog title="群信息修改" :visible.sync="dialogGroupEdit" width="300px">
           <el-select v-model="GroupEditValue" placeholder="请选择">
@@ -112,15 +113,15 @@
             </el-option>
           </el-select>
           <div slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="dialogGroupEdit = false">确 定</el-button>
+            <el-button type="primary" @click="groupSubmitBtn">确 定</el-button>
           </div>
         </el-dialog>
         <!--群公告-->
-        <dialog-groupnotice :Message="Message" :status="noticeStatus"
-                            @changeDialog="noticeStatus=false"></dialog-groupnotice>
+        <!--<dialog-groupnotice :Message="Message" :status="noticeStatus"-->
+                            <!--@changeDialog="noticeStatus=false"></dialog-groupnotice>-->
         <!--群消息推送-->
-        <dialog-grouppush :Message="Message" :status="pushStatus"
-                          @changeDialog="pushStatus=false"></dialog-grouppush>
+        <dialog-grouppush :Message="Message" :status="pushStatus" v-if="pushStatus"
+                          @changeDialog="pushStatus=false" @backData="backData"></dialog-grouppush>
 
       </el-card>
       <!--分页-->
@@ -189,9 +190,10 @@
       this.initWebSocket()
     },
     methods: {
-      // 个人消息推送
-      backData(val) {
-        this.websocketsend("PUSH_MESSAGE_TO_SOMEONE", val)
+      // 回传消息发送，通用
+      backData(type, val) {
+        console.log(type, val)
+        this.websocketsend(type, val)
       },
       /************************************************************************************系统操作***********************************************/
       ifSelect(info) {
@@ -207,19 +209,19 @@
             this.websocketsend("DarkScreen", {dname: this.selectDate}) //暗屏
             break;
           case 'resetBtn':
-            this.websocketsend("SYS_REBOOT", {dname: this.selectDate}) //重启设备
+            this.websocketsend("RebootDevice", {dname: this.selectDate}) //重启设备
             break;
           case 'updataBtn':
             Request.requestHandle({
               url: 'querySelectdictionary',
               data: {
-                type:'1'
+                type: '1'
               },
               type: 'post'
             }, res => {
-              if(res.success==1){
+              if (res.success == 1) {
                 // console.log(res.data.url)
-                this.websocketsend("UpgradeService", {dname: this.selectDate,msg:res.data.url}) //升级服务
+                this.websocketsend("UpgradeService", {dname: this.selectDate, msg: res.data.url}) //升级服务
               }
             })
             break;
@@ -227,13 +229,13 @@
             Request.requestHandle({
               url: 'querySelectdictionary',
               data: {
-                type:'2'
+                type: '2'
               },
               type: 'post'
             }, res => {
-              if(res.success==1){
+              if (res.success == 1) {
                 // console.log(res.data.url)
-                this.websocketsend("UpgradeApplication", {dname: this.selectDate,msg:res.data.url}) //升级APP
+                this.websocketsend("UpgradeApplication", {dname: this.selectDate, msg: res.data.url}) //升级APP
               }
             })
             break;
@@ -266,13 +268,6 @@
         this.clearDiaStatus = true
         this.clearDiaDiffer = 'users'
       },
-      //清理群死号
-      clearGroupBtn() {
-        this.clearDiaStatus = true
-        this.clearDiaDiffer = 'group'
-      },
-
-
       /************************************************************************************列表按钮事件***********************************************/
       //   开启客服
       openRobotBtn(row) {
@@ -307,7 +302,7 @@
         if (!row.phone) return;
         this.dialogGroupEdit = true
         Request.requestHandle({
-          url: 'querygetAllGroupByUid',
+          url: 'getGroupBuiltWithConsole',
           data: {
             uid: this.uid(),// 用户id
             mobile: row.phone,// 手机号
@@ -318,6 +313,22 @@
             this.GroupEditOptions = res.data
           }
         })
+      },
+      //群信息修改提交
+      groupSubmitBtn(){
+        let val = this.GroupEditOptions.filter(item=>{
+          return item.groupId == this.GroupEditValue
+        })
+        console.log(val)
+      let info = {
+        "dname": [this.clickData.sn],
+        "msg": {
+          "groupId":this.GroupEditValue, // 要修改的群ID
+          "groupTitle":val[0].groupTitle, // 想要修改的群名
+          "groupInfo":val[0].groupNotice, // 想要修改的公告
+        }
+      }
+        this.websocketsend('EDIT_GROUP_INFO', info)
       },
 
       //群消息推送
@@ -337,11 +348,16 @@
       buildBtn(row) {
         this.Message = row;
         this.buildStatus = true;
-
       },
       letterBtn(row) {
         this.Message = row;
         this.letterStatus = true;
+      },
+      //清理群死号
+      clearGroupBtn(row) {
+        this.Message = row
+        this.clearDiaStatus = true
+        this.clearDiaDiffer = 'group'
       },
       /************************************************************************************elementui事件***********************************************/
       //页面数据
@@ -352,7 +368,7 @@
             page: this.page,
             pageSize: this.pageSize,
             userSid: this.userid,
-            phone: this.search,
+            sn: this.search,
             belongType: null
           },
           type: 'get'
@@ -374,8 +390,6 @@
           return item.sn
         })
         this.selectDate = arr
-
-
       },
       //分页器事件
       handleSizeChange(val) {
@@ -420,7 +434,7 @@
         return new Promise(resolve => {
           let {
             dname = '',
-            msg ='null'
+            msg = 'null'
           } = data
 
           let jsonData = JSON.stringify({
@@ -457,15 +471,10 @@
         this.socket.close();
       },
       handleOnlineStatus(msg) {
-        // console.log('on message ->', msg);
-        let msgObj = JSON.parse(msg);
-        // console.log(msgObj)
         if (msgObj.type === 'STATUS') {
           this.tableData.forEach(item => {
-            // console.log(item)
             if (item.sn == msgObj.dname) {
-              item['onlineStatus'] = decodeURIComponent(msgObj.msg);
-
+              this.$set(item,'onlineStatus',decodeURIComponent(msgObj.msg))
             }
           })
         }
@@ -480,7 +489,7 @@
   }
 </script>
 
-<style lang="scss" >
+<style lang="scss">
   .btns {
     text-align: left;
     p {
@@ -497,15 +506,16 @@
     display: block;
     float: left;
   }
-  .tableCol{
-    color: red !important;
-    .cell{
 
-      >button{
+  .tableCol {
+
+    .cell {
+
+      > button {
         float: left;
         width: 100px;
         height: 30px;
-        margin:  0 0 10px 10px;
+        margin: 0 0 10px 10px;
 
       }
     }

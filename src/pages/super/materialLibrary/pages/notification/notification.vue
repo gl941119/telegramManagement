@@ -18,7 +18,7 @@
       </el-form>
     </div>
     <div style="text-align: right">
-      <el-button type="primary" @click="dialogOpenGenre">添加</el-button>
+      <!--<el-button type="primary" @click="dialogOpenGenre">添加</el-button>-->
     </div>
     <!--弹窗1-->
     <el-dialog title="添加" :visible.sync="dialogGenre" width="300px">
@@ -160,10 +160,10 @@
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button type="text" @click="dialogEditMaterialBtn(scope.row)">编辑</el-button>
-          <el-button type="text" @click="updateMaterialStatus(scope.row,0)" v-if="scope.row.status==1">停用
-          </el-button>
-          <el-button type="text" @click="updateMaterialStatus(scope.row,1)" v-else>启用</el-button>
-          <el-button type="text" @click="deleteMaterial(scope.row)">删除</el-button>
+          <!--<el-button type="text" @click="updateMaterialStatus(scope.row,0)" v-if="scope.row.status==1">停用-->
+          <!--</el-button>-->
+          <!--<el-button type="text" @click="updateMaterialStatus(scope.row,1)" v-else>启用</el-button>-->
+          <!--<el-button type="text" @click="deleteMaterial(scope.row)">删除</el-button>-->
         </template>
       </el-table-column>
     </el-table>
@@ -238,11 +238,10 @@
       //页面Data
       requestData() {
         Request.requestHandle({
-          url: 'queryMaterialData',
+          url: 'getAllMaterial',
           data: {
             page: this.page,
             pageSize: this.pageSize,
-            uid: this.userid,
             title: this.srearchForm.input,
             materialType:this.radio
           },

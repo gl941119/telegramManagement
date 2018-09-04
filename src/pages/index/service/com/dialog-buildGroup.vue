@@ -1,31 +1,31 @@
 <template>
   <div>
     <el-dialog title="新建群组" :visible.sync="dialogFormVisible" width="600px">
-      <el-form :model="form" style="text-align: left">
+      <el-form  style="text-align: left">
         <el-form-item label="群名:" :label-width="formLabelWidth">
-          <el-input v-model="form.q" placeholder="请输入.." style="width: 200px;"></el-input>
+          <el-input v-model="groupTitle" placeholder="请输入.." style="width: 200px;"></el-input>
         </el-form-item>
         <el-form-item label="群公告:" :label-width="formLabelWidth">
-          <el-input v-model="form.q" placeholder="请输入.." type="textarea" style="width: 300px;"></el-input>
+          <el-input v-model="groupInfo" placeholder="请输入.." type="textarea" style="width: 300px;"></el-input>
         </el-form-item>
         <el-form-item label="新建群邀请人数设置:" :label-width="formLabelWidth">
-          <el-input v-model="form.w" placeholder="请输入.." style="width: 217px;"></el-input>
+          <el-input v-model="inviteSize" placeholder="请输入.." style="width: 217px;"></el-input>
           <p style="color: red;font-size: 12px;">可设置导入数量区间在1-200范围内，随机邀请通讯录内人员</p>
         </el-form-item>
         <el-form-item label="选择telegram机器人:" :label-width="formLabelWidth">
-          <el-select v-model="form.e" placeholder="请选择活动区域">
+          <el-select v-model="botName" placeholder="请选择活动区域">
             <el-option
               v-for="item in options"
               :key="item.botId"
               :label="item.botName"
-              :value="item.botId">
+              :value="item.botName">
             </el-option>
           </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        <el-button type="primary" @click="Submit">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -47,25 +47,20 @@
         }
       },
     },
-    watch:{
-      Message:function () {
-        this.getRobot()
-      }
-    },
+
     data() {
       return {
         options: [],
         value: undefined,
-        form: {
-          q: undefined,
-          w: undefined,
-          e: undefined
-        },
+        groupTitle:undefined,
+        groupInfo:undefined,
+        inviteSize:undefined,
+        botName:undefined,
         formLabelWidth:'150px'
       }
     },
     mounted(){
-
+      this.getRobot()
     },
     methods:{
       getRobot(){
@@ -80,8 +75,19 @@
             this.options = res.data
           }
         })
-
-
+      },
+      Submit(){
+        let info = {
+          "dname": [this.Message.sn],
+          "msg":{
+            "groupTitle":this.groupTitle,
+            "groupInfo":this.groupInfo,
+            "botName":this.botName,
+            'inviteSize':parseInt(this.inviteSize)
+          }
+        }
+        this.$emit('backData', 'CREATE_NEW_GROUP',info)
+        this.dialogFormVisible = false;
       }
     }
   }

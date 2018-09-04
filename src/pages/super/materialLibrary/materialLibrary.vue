@@ -2,12 +2,11 @@
   <el-container>
     <el-header>
       <div style="" class="el-header-div">
-        <router-link  class="el-header-div-link" tag="a" :to="{name:'crowdSelf'}" type="text" >群管理(自建)</router-link>
-        <router-link  class="el-header-div-link" tag="a" :to="{name:'crowdMaterial'}" type="text" >群管理(素材)</router-link>
-        <router-link  class="el-header-div-link" tag="a" :to="{name:'notification'}" type="text" >消息推送</router-link>
-        <!--<router-link  class="el-header-div-link" tag="a" :to="{name:'greet'}" type="text"  >打招呼设置</router-link>-->
-        <router-link  class="el-header-div-link" tag="a" :to="{name:'loginUser'}" type="text"  >登录账户管理</router-link>
-        <router-link  class="el-header-div-link" tag="a" :to="{name:'robot'}" type="text"  >telegram机器人</router-link>
+        <router-link  class="el-header-div-link" tag="a" :to="{name:'superCrowdSelf'}" type="text" >群管理(自建)</router-link>
+        <router-link  class="el-header-div-link" tag="a" :to="{name:'superCrowdMaterial'}" type="text" >群管理(素材)</router-link>
+        <router-link  class="el-header-div-link" tag="a" :to="{name:'superNotification'}" type="text" >消息推送</router-link>
+        <router-link  class="el-header-div-link" tag="a" :to="{name:'superLoginUser'}" type="text"  >登录账户管理</router-link>
+        <router-link  class="el-header-div-link" tag="a" :to="{name:'superRobot'}" type="text"  >telegram机器人</router-link>
       </div>
       <div class="header-right right">
         <i class="el-icon-star-off"></i>

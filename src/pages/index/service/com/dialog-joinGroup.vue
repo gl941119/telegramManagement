@@ -1,6 +1,5 @@
 <template>
     <div>
-
       <el-dialog title="加入群" :visible.sync="dialogFormVisible" width="350px">
         <el-form>
           <el-form-item label="群名:" :label-width="formLabelWidth">
@@ -31,7 +30,6 @@
       },
       data(){
           return{
-
             group:undefined,
             options:[],
             formLabelWidth:undefined

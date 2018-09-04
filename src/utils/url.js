@@ -21,9 +21,7 @@ export default{
   updataCorpus:'telegram/corpus/updateCorpus',//修改语料库
   delCorpus:'telegram/corpus/deleteCorpus',//删除语料库
   stopCorpus:'telegram/corpus/updateCorpusStatus',//停用语料库
-  //素材
-  queryMaterialData:'telegram/material/getMaterialByUid',//根据用户Id，查询素材信息
-  addMaterial:'telegram/material/addMaterial',//添加素材
+
 
   updateMaterial:'telegram/material/updateMaterial',//修改素材信息
   deleteMaterial:'telegram/material/deleteMaterial',//删除 素材
@@ -63,7 +61,8 @@ export default{
   querygetAllGroupByUid:'telegram/deviceGroups/getAllGroupByUid',//根据uid 和手机号 获取所有群信息
   getAllMemberByGroupId:'telegram/groupBuilt/getAllMemberByGroupId',//根据群id查询 群成员
   getMaterialWithId:'telegram/material/getMaterialWithId',//根据素材id获取素材详细信息
-
+  getGroupBuiltWithConsole:'telegram/groupBuilt/getGroupBuiltWithConsole',//控制台 查询群管理 自建，群信息修改
+  getGroupWithManage:'telegram/deviceGroups/getGroupWithManage',//根据uid 和手机号 获取所有(带有管理的)群信息(清理死号)
   //群管理自建
   chaogetGroupBuiltByUid:'telegram/groupBuilt/getAllGroupBuilt',//超管后台查询全部群管理 自建
   getGroupBuiltByUid:'telegram/groupBuilt/getGroupBuiltByUid',//根据运营账户id查询
@@ -77,7 +76,12 @@ export default{
   addGroupMaterial:'telegram/groupMaterial/addGroupMaterial',//新增群管理(素材)
   updateGroupMaterial:'telegram/groupMaterial/updateGroupMaterial',//修改群管理(素材)
 
+  //消息推送
+  queryMaterialData:'telegram/material/getMaterialByUid',//根据用户Id，查询素材信息
+  addMaterial:'telegram/material/addMaterial',//添加素材
+
   //登录账号管理
+  getAllMaterial:"telegram/material/getAllMaterial",//超级管理后台，查询消息推送素材
   getAllDeviceAccount:'telegram/devicesAccount/getAllDeviceAccount',//管理后台查询
   getDeviceAccountByUid:'telegram/devicesAccount/getDeviceAccountByUid',//运营后台查询
 

@@ -9,6 +9,7 @@ export default {
     pageSize: 10, // 一页的数量
     miniPageSize: 10, // 小量
     pageStart: 1,
+  interval:900,// 消息推送批次之间的推送间隔，单位秒
     uploadImg:(process.env.NODE_ENV === 'development' ? url.localTestUrl:url.productUrl) +"telegram/corpus/uploadImg",
     uploadVideo:(process.env.NODE_ENV === 'development' ? url.localTestUrl:url.productUrl) +"telegram/corpus/uploadVideo",
     testupload:(process.env.NODE_ENV === 'development' ? url.localTestUrl:url.productUrl) +"telegram/groupManage/importGroupManageUser",

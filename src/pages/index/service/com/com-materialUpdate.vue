@@ -89,7 +89,7 @@
         let arr = [null, null, null];//对返回的图片处理
         this.imgUrlArray.forEach((item, index) => {
           arr[index] = item
-        })
+        });
         Request.requestHandle({
           url: 'addMaterial',
           data: {
@@ -108,26 +108,19 @@
           if (res.success == 1) {
             this.message('保存成功', 'success')
           }
-        })
+        });
         this.backDataEvent() // 素材数据传回
       },
       //数据回传事件
       backDataEvent() {
-        let arr = [null, null, null];//对返回的图片处理
-        this.imgUrlArray.forEach((item, index) => {
-          arr[index] = item
-        })
         let val = {
           "uid": this.uid(),// 子账户uid
           "title": this.inputTitle,
-          "materialType": this.type,
-          "content": this.textarea,
-          "photo1Url": arr[0],
-          "photo2Url": arr[1],
-          "photo3Url": arr[2],
-          "videoUrl": this.video
-        }
-        console.log(val)
+          "text": this.textarea,
+          photo:this.imgUrlArray,
+          "video": this.video,
+          // "materialType": this.type,
+        };
         this.$emit('backdData', val)
       },
       // 视频组件传回url
@@ -148,7 +141,20 @@
           },
           type: 'get',
         }, res => {
-          this.$emit('backdData', res.data)
+          let {photo1Url, photo2Url, photo3Url} = res.data;
+          let  photo= [photo1Url, photo2Url, photo3Url].filter(item => {
+            return item != null
+          });
+          let val = {
+            "uid": this.uid(),// 子账户uid
+            "title": res.data.title,
+            "text": res.data.content,
+            photo,
+            "video": res.data.videoUrl,
+            "materialType": res.data.materialType,
+          };
+          console.log('matertialUpdate=>',val)
+          this.$emit('backdData', val)
         })
       },
 

@@ -174,13 +174,11 @@
           Cache.setSession('userid', id);
           Cache.setSession('user_type', type);
           Cache.setSession('permission', permission);
-
-          this.$router.push({ name: 'index' });
-          // if (data.type === 1) {
-          //   this.$router.push({ name: 'main' });
-          // } else {
-          //   this.$router.push({ name: 'index' });
-          // }
+          if (permission === '0') {
+            this.$router.push({ name: 'super' });
+          } else if(permission === '3'){
+            this.$router.push({ name: 'index' });
+          }
         } else {
           console.error('login error');
         }
