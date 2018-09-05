@@ -2,7 +2,7 @@
   <el-card class="box-card">
     <!--搜索-->
     <div style='overflow: hidden;text-align: left'>
-      <el-form :inline="true"  class="demo-form-inline">
+      <el-form :inline="true" class="demo-form-inline">
         <el-form-item label="手机号：">
           <el-input v-model="phone" placeholder="请输入素材标题"></el-input>
         </el-form-item>
@@ -37,9 +37,9 @@
       <el-table-column prop="signature" label="个性签名"></el-table-column>
       <el-table-column prop="lastOnline" label="最后一次在线时间"></el-table-column>
       <!--<el-table-column label="操作">-->
-        <!--<template slot-scope="scope">-->
-          <!--<el-button type="text" @click="">编辑资料</el-button>-->
-        <!--</template>-->
+      <!--<template slot-scope="scope">-->
+      <!--<el-button type="text" @click="">编辑资料</el-button>-->
+      <!--</template>-->
       <!--</el-table-column>-->
     </el-table>
     <!--分页-->
@@ -52,6 +52,7 @@
   import Cache from '@/utils/cache'
   import Request from '@/utils/require'
   import Config from '@/utils/config'
+  import Util from '@/utils/util'
 
   export default {
     name: "loginUser",
@@ -66,7 +67,7 @@
         pageSize: 10,
         total: 0,
         tableData: [],
-
+        util: new Util(),
       }
     },
     mounted() {
@@ -76,16 +77,24 @@
     methods: {
       RequestData() {
         Request.requestHandle({
-          url:'getDeviceAccountByUid',
-          data:{
-            page:this.page,
-            pageSize:this.pageSize,
-            uid:this.uid(),// 运营账户id
-            phone:this.phone,// 手机号
+          url: 'getDeviceAccountByUid',
+          data: {
+            page: this.page,
+            pageSize: this.pageSize,
+            uid: this.uid(),// 运营账户id
+            phone: this.phone,// 手机号
           },
-          type:'get',
-        },res=>{
-          if(res.success==1){
+          type: 'get',
+        }, res => {
+          if (res.success == 1) {
+
+            res.data.forEach(item => {
+              if (item.lastOnline) {
+                let tiem = new Date(item.lastOnline * 1000)
+                item.lastOnline = this.util.dateFormat(tiem,'time')
+              }
+            });
+
             this.tableData = res.data;
             this.total = res.total;
           }

@@ -57,7 +57,6 @@
           <el-button type="text">添加客户标签</el-button>
         </template>
       </el-table-column>
-
     </el-table>
     <!--分页-->
     <com-pages :total="total" @handleSizeChange="handleSizeChange"
@@ -128,7 +127,7 @@
 
       },
       timeMessage(val) {
-        console.log(val)
+        console.log(val);
         this.startTime = val[0];
         this.endTime = val[1];
       },

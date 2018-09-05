@@ -137,7 +137,7 @@
           },
           type: 'get'
         }, res => {
-          this.tableData = res.data
+          this.tableData = res.data;
           this.total = res.total
         })
       },
@@ -168,7 +168,7 @@
           flag: true
         }, res => {
           if (res.success == 1) {
-            this.message('修改成功', 'success')
+            this.message('修改成功', 'success');
             this.dialogFormVisible = false;
             this.RequestData()
           }

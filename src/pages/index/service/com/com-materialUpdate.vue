@@ -63,9 +63,10 @@
       }
     },
     watch: {
-      // radio:function (val) {
-      //   this.$emit('radioStatus',val)
-      // }
+      radio:function (val) {
+
+
+      }
     },
     mounted() {
       this.RequestData()
@@ -120,6 +121,7 @@
           photo:this.imgUrlArray,
           "video": this.video,
           // "materialType": this.type,
+          'radio':this.radio
         };
         this.$emit('backdData', val)
       },
@@ -153,7 +155,7 @@
             "video": res.data.videoUrl,
             "materialType": res.data.materialType,
           };
-          console.log('matertialUpdate=>',val)
+          console.log('matertialUpdate=>',val);
           this.$emit('backdData', val)
         })
       },

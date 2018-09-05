@@ -85,8 +85,8 @@
             "botName":this.botName,
             'inviteSize':parseInt(this.inviteSize)
           }
-        }
-        this.$emit('backData', 'CREATE_NEW_GROUP',info)
+        };
+        this.$emit('backData', 'CREATE_NEW_GROUP',info);
         this.dialogFormVisible = false;
       }
     }

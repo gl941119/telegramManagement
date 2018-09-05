@@ -124,14 +124,14 @@
           type: 'get',
         }, res => {
           if (res.success == 1) {
-            this.tableData = res.data
+            this.tableData = res.data;
             this.total = res.total
           }
         })
       },
       //表格点击
       handleRowClick(row, event, column) {
-        console.log(row)
+        console.log(row);
         this.rowData = row
       },
 
@@ -149,7 +149,7 @@
         }
       },
       closeDialog(val) {
-        console.log(val)
+        console.log(val);
         this.robotDialog = val
       },
 

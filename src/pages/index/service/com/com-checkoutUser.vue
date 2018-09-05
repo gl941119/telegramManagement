@@ -56,7 +56,7 @@
       updatacheckoutUser() {
         let val = this.options.filter(item => {
           return item.id == this.optionsValue
-        })
+        });
         // console.log(val)
         Request.requestHandle({
           url: 'updateDeviceAccount',
@@ -75,11 +75,10 @@
             this.$message({
               type:'success',
               message:'切换成功'
-            })
+            });
             this.$emit('closeDialog',false)
           }
         })
-
       }
 
     }

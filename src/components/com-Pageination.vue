@@ -37,12 +37,12 @@
     methods: {
       handleSizeChange(val) {
         // console.log(`每页 ${val} 条`);
-        this.$store.commit('setPageSize',val)
+        this.$store.commit('setPageSize',val);
         this.$emit('RequestPageData')
       },
       handleCurrentChange(val) {
         // console.log(`当前页: ${val}`);
-        this.$store.commit('setPage',val)
+        this.$store.commit('setPage',val);
         this.$emit('RequestPageData')
       }
     },

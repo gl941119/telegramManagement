@@ -48,7 +48,7 @@
         this.message('上传成功','success');
         let url=fileList.map(item=>{
           return item.response.data
-        })
+        });
         this.$emit('fileList',url)
       }
     },

@@ -127,7 +127,7 @@
 
       },
       timeMessage(val) {
-        console.log(val)
+        console.log(val);
         this.startTime = val[0];
         this.endTime = val[1];
       },

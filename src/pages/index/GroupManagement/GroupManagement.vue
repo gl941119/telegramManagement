@@ -157,7 +157,7 @@
       }
     },
     mounted() {
-      this.requestData()
+      this.requestData();
       this.refreshUserInfo()
     },
     methods: {
@@ -170,19 +170,19 @@
           },
           type: 'get'
         }, res => {
-          this.total = res.total
+          this.total = res.total;
           this.tableData = res.data
         })
       },
       // 查看
       queryGroupBtn(row) {
-        let gid
+        let gid;
         // console.log(!row)
         if (!row) {
           gid = cache.getSession('GourpId')
           // console.log(gid)
         } else {
-          cache.setSession('GourpId', row.id)
+          cache.setSession('GourpId', row.id);
           gid = row.id
         }
         this.dialogQueryGroup = true;
@@ -203,7 +203,7 @@
       onSubmit() {
       },
       handleCurrentChangehange(val) {
-        this.page = val
+        this.page = val;
         this.requestData()
       },
       handleSelectionChange(val) {
@@ -211,7 +211,7 @@
       },
       handleCurrentChangehangeGroup(val) {
         // console.log(val)
-        this.queryGroudPage = val
+        this.queryGroudPage = val;
         this.queryGroupBtn()
       },
       videoUploadSuccess() {

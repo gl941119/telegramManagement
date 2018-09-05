@@ -10,7 +10,6 @@
     </el-date-picker>
   </div>
 </template>
-
 <script>
   //输出事件 time
   import util from '@/utils/util'
@@ -24,10 +23,14 @@
     },
     watch:{
       value:function (val){
-        let info = this.util.timeCycle(val)
-        console.log(info)
-        this.$emit('timeMessage',info)
-        return
+        console.log(val);
+        if(val){
+          let info = this.util.timeCycle(val);
+          this.$emit('timeMessage',info)
+        }else{
+          let info=[null,null];
+          this.$emit('timeMessage',info)
+        }
       }
     }
   }

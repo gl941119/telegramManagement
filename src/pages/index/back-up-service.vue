@@ -391,8 +391,8 @@
       }
     },
     mounted() {
-      this.queryDataInfo()
-      this.requestNotification()
+      this.queryDataInfo();
+      this.requestNotification();
       this.initWebSocket()
     },
     computed: {
@@ -409,7 +409,7 @@
           this.$message({
             message: '选择一项',
             type: 'warning'
-          })
+          });
           this.checkoutuserDialog = false;
         }
       }
@@ -433,7 +433,7 @@
               item.onlineStatus = undefined
             })
           }
-          this.tableData = res.data
+          this.tableData = res.data;
           this.total = res.total
         })
       },
@@ -442,15 +442,15 @@
       },
       //列表勾选项
       handleSelectionChange(val) {
-        console.log(val)
+        console.log(val);
         this.multipleSelection = val.length;
         // this.CheckoutForm.id = val[0].id;
         this.selectTable = val;//勾选项
-        this.selectTable_sn = []
+        this.selectTable_sn = [];
         val.forEach(item => {//勾选项设备号
           this.selectTable_sn.push(item.sn)
-        })
-        let cen = val.length.toString()
+        });
+        let cen = val.length.toString();
         this.alertMessage = `已选择 ${cen} 项`
       },
       //切换弹窗按钮
@@ -459,10 +459,10 @@
           this.$message({
             message: '选择一项',
             type: 'warning'
-          })
+          });
           return;
         }
-        this.dialogCheckout = true
+        this.dialogCheckout = true;
         this.checkoutBelongTpe('group')
       },
       //切换弹窗获取所有用户信息通用
@@ -488,10 +488,10 @@
           this.$message({
             message: "选择群或者用户",
             type: 'warning'
-          })
+          });
           return;
         }
-        let data
+        let data;
         let Type = this.CheckoutForm.belongType,
           options = this.options,
           obj = null,
@@ -501,7 +501,7 @@
             if (item.groupTitle == this.CheckoutForm.belongUser) {
               obj = item
             }
-          })
+          });
           data = {
             "id": this.selectTable[0].id,
             "belongType": this.CheckoutForm.belongType,
@@ -514,7 +514,7 @@
             if (item.userTitle == this.CheckoutForm.belongUser) {
               obj = item
             }
-          })
+          });
           data = {
             "id": this.selectTable[0].id,
             "belongType": this.CheckoutForm.belongType,
@@ -533,7 +533,7 @@
 
             this.queryDataInfo()
           }
-        })
+        });
         // //手机
 
         let info = this.utils.websocketJoin("CHANGE_GROUP_USER", this.selectTable_sn, {
@@ -546,15 +546,15 @@
           this.$message({
             message: "推送成功",
             type: 'success'
-          })
+          });
           this.dialogCheckout = false;
         })
 
       },
       //消息推送按钮
       NotificationBtn(type) {
-        this.dialogNotificationType = type
-        this.dialogNotification = true
+        this.dialogNotificationType = type;
+        this.dialogNotification = true;
         Require.requestHandle({//查询素材
           url: 'queryFodderList',
           data: {
@@ -580,15 +580,15 @@
       //消息推送弹窗确定传手机
       NotificationConfirm() {
         if (!this.NotificationValue) return;
-        let {title, content, photo1Url, photo2Url, photo3Url, videoUrl} = this.NotificationFodder
+        let {title, content, photo1Url, photo2Url, photo3Url, videoUrl} = this.NotificationFodder;
         let obj = {
           belongType: this.selectTable[0].belongType == '1' ? 'group' : 'user',
           belongId: this.selectTable[0].belongId,
           belongTitle: this.selectTable[0].belongTitle,
           belongUser: this.selectTable[0].belongUser
-        }
+        };
 
-        let data, type
+        let data, type;
         if (this.NotificationType == 1) {//判断选择
 
           // this.NotificationSelect.forEach(item => {
@@ -598,20 +598,20 @@
           //   }
           // })
           if (!content) return;
-          data = content
+          data = content;
           type = 'text'
         }
         if (this.NotificationType == 2) {
-          let arr = [photo1Url, photo2Url, photo3Url]
+          let arr = [photo1Url, photo2Url, photo3Url];
           data = arr.filter(item => {
             return item != null
-          })
+          });
 
           type = 'picture'
         }
         if (this.NotificationType == 3) {
           if (!videoUrl) return;
-          data = [videoUrl]
+          data = [videoUrl];
           type = 'video'
         }
         if (this.dialogNotificationType == 'one') {
@@ -619,7 +619,7 @@
             this.$message({
               message: '选择一项',
               type: 'warning'
-            })
+            });
             return;
           }
           //消息推送socket
@@ -645,7 +645,7 @@
             this.$message({
               message: '至少选择一项',
               type: 'warning'
-            })
+            });
             return;
           }
           this.selectTable.forEach(item => {
@@ -670,13 +670,13 @@
       //分页数
       handleSizeChange(val) {
         // console.log(`每页 ${val} 条`);
-        this.pageSize = val
+        this.pageSize = val;
         this.queryDataInfo()
       },
       //翻页
       handleCurrentChange(val) {
         // console.log(`当前页: ${val}`);
-        this.page = val
+        this.page = val;
         this.queryDataInfo()
       },
       //亮屏
@@ -685,7 +685,7 @@
           this.$message({
             message: '至少选择一项',
             type: 'warning'
-          })
+          });
           return;
         }
         let info = this.utils.websocketJoin("BrightScreen", this.selectTable_sn);
@@ -702,7 +702,7 @@
           this.$message({
             message: '至少选择一项',
             type: 'warning'
-          })
+          });
           return;
         }
         let info = this.utils.websocketJoin("DarkScreen", this.selectTable_sn);
@@ -751,7 +751,7 @@
           this.$message({
             message: '消息发送成功',
             type: 'warning'
-          })
+          });
           this.queryDataInfo()
         })
       },
@@ -761,7 +761,7 @@
           this.$message({
             message: '勾选一项',
             type: 'warning'
-          })
+          });
           return;
         }
 
@@ -773,14 +773,14 @@
           this.$message({
             message: '请输入完整',
             type: 'warning'
-          })
+          });
           return;
         }
         let {
           phone,
           username,
           personalLable
-        } = this.addUsersForm
+        } = this.addUsersForm;
         let info = this.utils.websocketJoin("ADD_ACCOUNT", this.selectTable_sn, {
           account: phone,  //机器人账号
           nickname: username,   //户名昵称
@@ -824,11 +824,11 @@
           this.$message({
             message: '至少选择一项',
             type: 'warning'
-          })
+          });
           return;
         }
         // console.log(this.selectTable.length)
-        let info
+        let info;
         info = this.utils.websocketJoin("UpgradeService", this.selectTable_sn, url);
         this.websocketsend(info).then(res => {
           this.$message({
@@ -844,7 +844,7 @@
           this.$message({
             message: '至少选择一项',
             type: 'warning'
-          })
+          });
           return;
         }
         let info = this.utils.websocketJoin("UpgradeApplication", this.selectTable_sn, url);
@@ -862,7 +862,7 @@
           this.$message({
             message: "请勾选",
             type: 'warning'
-          })
+          });
           return;
         }
         let info = this.utils.websocketJoin("SYNC_INFO", this.selectTable_sn, 'null');
@@ -872,7 +872,7 @@
       },
       //初始化websocket
       initWebSocket() {
-        console.dir(window.WebSocket)
+        console.dir(window.WebSocket);
         if (!window.WebSocket) {
           window.WebSocket = window.MozWebSocket;
         }
@@ -891,7 +891,7 @@
       },
       //socket报错
       websocketError() {
-        console.log('报错重连')
+        console.log('报错重连');
         this.initWebSocket()
       },
       //数据发送
@@ -902,7 +902,7 @@
             url: 'DataEncryption',
             data: agentData,
             flag: true,
-          }
+          };
           Require.requestHandle(params, res => {
             this.socket && this.socket.send(res.data);
             // console.log("数据发送...");
@@ -920,7 +920,7 @@
         let {
           dname,
           msg = null
-        } = data
+        } = data;
         let jsonData = JSON.stringify({
           device: "mclient",
           type: type,
@@ -929,13 +929,13 @@
             dname,
             msg
           }
-        })
+        });
         //数据发送
         let params = {
           url: 'DataEncryption',
           data: jsonData,
           flag: true,
-        }
+        };
         Require.requestHandle(params, res => {
           this.socket && this.socket.send(res.data);
           // console.log("数据发送...");
@@ -950,7 +950,7 @@
       },
       //关闭websocket
       websocketclose() {
-        console.log('关闭socket')
+        console.log('关闭socket');
         this.socket.close();
       },
       handleOnlineStatus(msg) {
@@ -971,7 +971,7 @@
     },
     //实例销毁
     beforeDestroy() {
-      this.socket && this.websocketclose()
+      this.socket && this.websocketclose();
       clearInterval(this.SetInterval);
     }
   }

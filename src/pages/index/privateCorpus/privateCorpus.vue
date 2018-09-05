@@ -8,10 +8,10 @@
         <!--搜索-->
         <div style='overflow: hidden;'>
           <el-form :inline="true" :model="srearchForm" class="demo-form-inline">
-            <el-form-item label="问答匹配度：" style="float: left">
-              <el-input v-model="srearchForm.matching" size="mini" style="width: 52px"></el-input>
-              %
-            </el-form-item>
+            <!--<el-form-item label="问答匹配度：" style="float: left">-->
+              <!--<el-input v-model="srearchForm.matching" size="mini" style="width: 52px"></el-input>-->
+              <!--%-->
+            <!--</el-form-item>-->
             <el-form-item label="语料查找：" style="float: left;margin-left: 100px;">
               <el-input v-model="srearchForm.find" size="mini"></el-input>
             </el-form-item>
@@ -21,7 +21,7 @@
           </el-form>
         </div>
         <!--新增语料-->
-        <div style="margin-right: -1200px;">
+        <div style="text-align: right;">
           <el-button type="info" size="mini" @click="dialogAddCorpus = true">新增语料
           </el-button>
           <el-button type="info" size="mini" @click="delCorpus('more')">批量删除
@@ -256,9 +256,9 @@
             compatibility: this.srearchForm.matching
           },
           type: 'get'
-        }
+        };
         Request.requestHandle(params, res => {
-          this.tableData = res.data
+          this.tableData = res.data;
           this.total = res.total
         })
       },
@@ -269,13 +269,13 @@
           content,
           photoUrl,
           videoUrl
-        } = this.addCorpusform
+        } = this.addCorpusform;
 
         if (!(problem && content)) {
           this.$message({
             message: '问题和答案必填哈',
             type: 'warning'
-          })
+          });
           return;
         }
         let params = {
@@ -289,7 +289,7 @@
           },
           type: 'post',
           flag: true
-        }
+        };
         Request.requestHandle(params, res => {
           this.dialogAddCorpus = false;
           this.requestCorpus();
@@ -303,7 +303,7 @@
       },
       //编辑语料btn
       editCorpusBtn(row) {
-        this.dialogEditCorpus = true
+        this.dialogEditCorpus = true;
         Request.requestHandle({
           url: 'getCorpusContentMessage',
           data: {
@@ -311,48 +311,52 @@
           },
           type: 'get'
         }, res => {
-          let {id, problem, content, photoUrl, videoUrl} = res.data
+          let {id, problem, content, photoUrl, videoUrl} = res.data;
           this.editCorpusForm = {id, problem, content, photoUrl, videoUrl}
         })
       },
       //del语料btn
       delCorpus(type, row) {
-        let ids = [];
-        if (type == 'more') {
-          if (this.multipleSelection.length != 0) {
-            this.multipleSelection.forEach(item => {
-              ids.push(item.id)
-            })
-          } else {
-            this.$message({
-              message: '至少一项',
-              type: 'warning'
-            })
-            return
+        this.confirm().then(t=>{
+          let ids = [];
+          if (type == 'more') {
+            if (this.multipleSelection.length != 0) {
+              this.multipleSelection.forEach(item => {
+                ids.push(item.id)
+              })
+            } else {
+              this.$message({
+                message: '至少一项',
+                type: 'warning'
+              });
+              return
+            }
           }
-        }
-        if (type == 'single') {
-          ids.push(row.id)
-        }
-        // console.log(ids.length)
+          if (type == 'single') {
+            ids.push(row.id)
+          }
+          // console.log(ids.length)
+          Request.requestHandle({
+            url: 'delCorpus',
+            data: {
+              ids,
+              uid: this.userid
+            },
+            type: 'post',
+            flag: true
+          }, res => {
+            if (res.success == 1) {
+              this.$message({
+                message: '删除成功',
+                type: 'suceess'
+              });
+              this.requestCorpus()
+            }
+          })
+        }).catch(e=>{
 
-        Request.requestHandle({
-          url: 'delCorpus',
-          data: {
-            ids,
-            uid: this.userid
-          },
-          type: 'post',
-          flag: true
-        }, res => {
-          if (res.success == 1) {
-            this.$message({
-              message: '删除成功',
-              type: 'suceess'
-            })
-            this.requestCorpus()
-          }
         })
+
       },
       //停用
       startAndStopCorpusBtn(row, type) {
@@ -378,11 +382,11 @@
           flag: true
         }, res => {
           if (res.success == 1) {
-            this.dialogEditCorpus = false
+            this.dialogEditCorpus = false;
             this.$message({
               message: res.message,
               type: 'success'
-            })
+            });
             this.requestCorpus()
           }
 
@@ -392,8 +396,8 @@
       //img上传
       ImgUploadSuccess(res, file) {
         // console.log(res, file)
-        this.imageUrl = res.data
-        this.addCorpusform.photoUrl = res.data
+        this.imageUrl = res.data;
+        this.addCorpusform.photoUrl = res.data;
         this.$message({
           message: res.message,
           type: 'success'
@@ -402,7 +406,7 @@
       //video上传
       videoUploadSuccess(res, file) {
         // console.log(res, file)
-        this.addCorpusform.videoUrl = res.data
+        this.addCorpusform.videoUrl = res.data;
         this.$message({
           message: res.message,
           type: 'success'
@@ -412,7 +416,7 @@
       editImgUploadSuccess(res, file) {
         // console.log(res, file)
 
-        this.editCorpusForm.photoUrl = res.data
+        this.editCorpusForm.photoUrl = res.data;
         this.$message({
           message: res.message,
           type: 'success'
@@ -421,7 +425,7 @@
       //video上传
       editvideoUploadSuccess(res, file) {
         // console.log(res, file)
-        this.editCorpusForm.videoUrl = res.data
+        this.editCorpusForm.videoUrl = res.data;
         this.$message({
           message: res.message,
           type: 'success'
@@ -444,19 +448,19 @@
       //分页数
       handleSizeChange(val) {
         // console.log(`每页 ${val} 条`);
-        this.pageSize = val
+        this.pageSize = val;
         this.requestCorpus()
       },
       //翻页
       handleCurrentChange(val) {
         // console.log(`当前页: ${val}`);
-        this.page = val
+        this.page = val;
         this.requestCorpus()
       },
       //勾选
       tableSelect(selection, row) {
-        let cen = selection.length.toString()
-        this.alertMessage = `已选择 ${cen} 项`
+        let cen = selection.length.toString();
+        this.alertMessage = `已选择 ${cen} 项`;
         this.multipleSelection = selection
       },
       handleCommand() {
@@ -483,8 +487,7 @@
         return (
           < div >
           < span > 语料状态 < /span>
-          < i
-      class= 'el-icon-tickets' > < /i>
+          < i class= 'el-icon-tickets' > < /i>
           < /div>
       )
       },

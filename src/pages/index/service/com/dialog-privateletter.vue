@@ -8,7 +8,7 @@
         <div>
           <el-radio v-model="radio" label="1">指定群成员</el-radio>
           <div>
-            <el-select v-model="groupValue" placeholder="选择群" @change="selectChange" :disabled="radio ==2">
+            <el-select v-model="groupValue" placeholder="选择群" @change="selectChange">
               <el-option
                 v-for="item in options"
                 :key="item.groupId"
@@ -26,26 +26,25 @@
             </el-select>
           </div>
         </div>
-
       </el-row>
       <el-row style="margin-top: 20px;">
         <el-col :span="6" style="line-height: 40px;"><el-radio v-model="radio" label="2">随机私信活跃用户</el-radio></el-col>
       </el-row>
+      <el-row style="margin-top: 20px;">
+        <el-col :span="6" style="line-height: 40px;">随机发送私信人数范围</el-col>
+        <el-col :span="18">
+          <el-input v-model="randDown" style="width: 50px"></el-input>
+          ~
+          <el-input v-model="randUp" style="width: 50px"></el-input>
+        </el-col>
+      </el-row>
+      <p style="color: red;font-size: 12px;margin:10px 0;text-align: left">每次执行消息推送任务时间间隔大于15分钟</p>
       <el-row style="margin-top: 20px;">
         <el-col :span="6" style="line-height: 40px;">每次私信人数</el-col>
         <el-col :span="18">
           <el-input v-model="start" style="width: 50px"></el-input>
           ~
           <el-input v-model="end" style="width: 50px"></el-input>
-        </el-col>
-      </el-row>
-      <p style="color: red;font-size: 12px;margin:10px 0;text-align: left">每次执行消息推送任务时间间隔大于15分钟</p>
-      <el-row style="margin-top: 20px;">
-        <el-col :span="6" style="line-height: 40px;">随机发送私信人数范围</el-col>
-        <el-col :span="18">
-          <el-input v-model="randUp" style="width: 50px"></el-input>
-          ~
-          <el-input v-model="randDown" style="width: 50px"></el-input>
         </el-col>
       </el-row>
 
@@ -85,8 +84,6 @@
         Material:null,
         randUp:undefined,
         randDown:undefined,
-
-
       }
     },
     computed: {
@@ -113,10 +110,10 @@
             "video": this.Material.video,
             "groupId":this.groupValue,
             "members":this.radio==2 ?  ['-1']:this.memberValue, // 群成员对象，内容对应userId，如果只有一个元素-1则表示随机成员
-            "randUp":this.randUp, //随机私信人数上限
-            "randDown":this.randDown, // 随机私信人数下限
-            "batch":this.util.random(this.start, this.end), // 每批推送的对象数量
-            "interval":Config.interval // 批次之间的推送间隔，单位秒
+            "randUp":parseInt(this.randUp), //随机私信人数上限
+            "randDown":parseInt(this.randDown), // 随机私信人数下限
+            "batch":parseInt(this.util.random(this.start, this.end)), // 每批推送的对象数量
+            "interval":parseInt(Config.interval) // 批次之间的推送间隔，单位秒
           }
         };
         // console.log('Privateletter=>', info);

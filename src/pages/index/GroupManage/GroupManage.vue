@@ -104,7 +104,7 @@
       }
     },
     mounted() {
-      this.requestData()
+      this.requestData();
       this.refreshUserInfo()
     },
     methods: {
@@ -119,7 +119,7 @@
           },
           type: 'get'
         }, res => {
-          this.total = res.total
+          this.total = res.total;
           this.tableData = res.data
         })
       },
@@ -128,7 +128,7 @@
         this.requestData()
       },
       handleCurrentChangehange(val) {
-        this.page = val
+        this.page = val;
         this.requestData()
       },
       handleSelectionChange(val) {
@@ -136,7 +136,7 @@
       },
       handleCurrentChangehangeGroup(val) {
         // console.log(val)
-        this.queryGroudPage = val
+        this.queryGroudPage = val;
         this.queryGroupBtn()
       },
       videoUploadSuccess() {

@@ -104,7 +104,7 @@
       },
       // 添加
       addDialog(){
-        this.dialogFormVisible=true
+        this.dialogFormVisible=true;
         this.form = {
           id:undefined,
           groupName:undefined,
@@ -123,15 +123,15 @@
           flag:true
         },res=>{
           if(res.success==1){
-            this.message('新增成功','success')
-            this.dialogFormVisible=false
+            this.message('新增成功','success');
+            this.dialogFormVisible=false;
             this.RequestData()
           }
         })
       },
       //编辑
       editDialog(row){
-        this.dialogFormVisible=true
+        this.dialogFormVisible=true;
         this.form = {
           id:row.id,
           groupName:row.groupName,
@@ -150,8 +150,8 @@
           flag:true
         },res=>{
           if(res.success==1){
-            this.message('修改成功','success')
-            this.dialogFormVisible=false
+            this.message('修改成功','success');
+            this.dialogFormVisible=false;
             this.RequestData()
           }
         })

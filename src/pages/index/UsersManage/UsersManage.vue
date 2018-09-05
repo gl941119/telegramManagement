@@ -9,10 +9,10 @@
         <div style='overflow: hidden;text-align: left'>
           <el-form :inline="true" :model="search" class="demo-form-inline">
             <el-form-item label="查找手机号：">
-              <el-input v-model="search.userMobile" placeholder="请输入素材标题"></el-input>
+              <el-input v-model="search.userMobile" placeholder="请输入手机号"></el-input>
             </el-form-item>
             <el-form-item label="所在国家：">
-              <el-input v-model="search.country" placeholder="请输入素材标题"></el-input>
+              <el-input v-model="search.country" placeholder="请搜索国家"></el-input>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="RequestData">搜索</el-button>
@@ -122,7 +122,7 @@
             flag: true,
           }, res => {
             if (res.success == 1) {
-              this.message('修改成功','success')
+              this.message('修改成功','success');
               this.RequestData()
             }
           })
@@ -131,21 +131,23 @@
       },
       //删除
       del(row) {
-        Request.requestHandle({
-          url: 'deleteByIds',
-          data: {
-            "ids": [row.id]
-          },
-          type: 'post',
-          flag: true,
-        }, res => {
-          if (res.success == 1) {
-            this.message('删除成功','danger')
-            this.RequestData()
-          }
+        this.confirm().then(item=>{
+          Request.requestHandle({
+            url: 'deleteByIds',
+            data: {
+              "ids": [row.id]
+            },
+            type: 'post',
+            flag: true,
+          }, res => {
+            if (res.success == 1) {
+              this.message('删除成功','danger');
+              this.RequestData()
+            }
+          })
+        }).catch(val=>{
+
         })
-
-
       },
       //列表勾选
       handleSelectionChange(val) {

@@ -5,7 +5,7 @@
         <el-col :span="8"
                 class="bierinc-logo-content">
           <img src="../../assets/img/logo.png"
-               alt="logo" style="width: 50px;height: 50px;">
+               alt="logo" style="width: 170px;height: 50px;">
           <div>币尔大数据</div>
         </el-col>
         <el-col :span="8"

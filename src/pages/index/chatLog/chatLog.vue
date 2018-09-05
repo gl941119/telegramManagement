@@ -2,8 +2,8 @@
   <el-container>
     <el-header>
       <div style="" class="el-header-div">
-        <router-link  class="el-header-div-link" tag="a" :to="{name:'robotLog'}" type="text" >机器人回复日志</router-link>
-        <router-link  class="el-header-div-link" tag="a" :to="{name:'ChatLogChildren'}" type="text" >聊天日志</router-link>
+        <router-link  class="el-header-div-link" :class="{'active':ind === '1'}" @click.native="ind = '1'" tag="a" :to="{name:'robotLog'}" type="text" >机器人回复日志</router-link>
+        <router-link  class="el-header-div-link" :class="{'active':ind === '2'}" @click.native="ind = '2'" tag="a" :to="{name:'ChatLogChildren'}" type="text" >聊天日志</router-link>
       </div>
       <div class="header-right right">
         <i class="el-icon-star-off"></i>
@@ -19,7 +19,6 @@
     </el-header>
     <el-main>
       <router-view></router-view>
-
     </el-main>
   </el-container>
 </template>
@@ -32,6 +31,7 @@
       return {
         userid: Cache.getSession("userid")||this.$store.state.uid,
         username: Cache.getSession("username")||this.$store.state.username,
+        ind:'1',
       }
     },
     methods:{
@@ -78,13 +78,11 @@
         color: #001e32;
       }
       &-link:hover{
-        color: #00abea;
-        border-bottom: 2px solid #00abea;
       }
-
-
     }
   }
-
-
+  .active{
+    color: #00abea;
+    border-bottom: 2px solid #00abea;
+  }
 </style>

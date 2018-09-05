@@ -25,7 +25,7 @@
       },
       watch:{
           value:function (val){
-            console.log(val)
+            console.log(val);
             // let info = this.util.timeCycle(val)
             this.$emit('timeMessage',info)
           }

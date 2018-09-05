@@ -38,7 +38,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="robotDialog = false">取 消</el-button>
-        <el-button type="primary" @click="addRobot" >确定</el-button>
+        <el-button type="primary" @click="addRobot">确定</el-button>
         <!--<el-button type="primary" @click="editRobot">编辑</el-button>-->
       </div>
     </el-dialog>
@@ -98,15 +98,15 @@
         rowData: null,
         robotDialog: false,
         robotForm: {
-          id:undefined,
+          id: undefined,
           botId: undefined,
           botName: undefined,
-          belongGroup:undefined,
+          belongGroup: undefined,
           helloSet: undefined,
-          belongAccount:undefined,
-          secretKey:undefined,
+          belongAccount: undefined,
+          secretKey: undefined,
         },
-        formLabelWidth:'120px',
+        formLabelWidth: '120px',
 
       }
     },
@@ -127,53 +127,54 @@
           type: 'get',
         }, res => {
           if (res.success == 1) {
-            this.tableData = res.data
+            this.tableData = res.data;
             this.total = res.total
           }
         })
       },
       //表格点击
       handleRowClick(row, event, column) {
-        console.log(row)
+        console.log(row);
         this.rowData = row
       },
       //新增
       addDialog() {
-        this.robotDialog = true
+        this.robotDialog = true;
         this.robotForm = {
           botId: undefined,
           botName: undefined,
           helloSet: undefined,
-          belongAccount:undefined,
-          secretKey:undefined,
-        }
+          belongGroup: undefined,
+          belongAccount: undefined,
+          secretKey: undefined,
+        };
         this.dialogType = 'add'
       },
       addRobot() {
-        let url
-        if(this.dialogType=='add'){
+        let url;
+        if (this.dialogType == 'add') {
           url = 'addTelegramBot'
         }
-        if(this.dialogType=='edit'){
-          url='updateTelegramBot'
+        if (this.dialogType == 'edit') {
+          url = 'updateTelegramBot'
         }
         Request.requestHandle({
           url,
-          data:{
+          data: {
             "uid": this.uid(),
-            id:this.robotForm.id,
+            id: this.robotForm.id,
             "botId": this.robotForm.botId,
             "botName": this.robotForm.botName,//"机器人名称",
-            belongGroup:this.robotForm.belongGroup,//所属群
-            "helloSet":this.robotForm.helloSet,// "打招呼语设置"
-            belongAccount:this.robotForm.belongAccount,
-            secretKey:this.robotForm.secretKey,
+            belongGroup: this.robotForm.belongGroup,//所属群
+            "helloSet": this.robotForm.helloSet,// "打招呼语设置"
+            belongAccount: this.robotForm.belongAccount,
+            secretKey: this.robotForm.secretKey,
           },
-          type:'post',
-          flag:true
-        },res=>{
-          if(res.success==1){
-            this.message('成功','success')
+          type: 'post',
+          flag: true
+        }, res => {
+          if (res.success == 1) {
+            this.message('成功', 'success');
             this.RequestData();
             this.robotDialog = false;
           }
@@ -184,34 +185,38 @@
         this.robotDialog = true;
         this.dialogType = 'edit';
         this.robotForm = {
-          id:row.id,
+          id: row.id,
           botId: row.botId,
           botName: row.botName,
           helloSet: row.helloSet,
+          belongGroup: row.belongGroup,
           belongAccount: row.belongAccount,
           secretKey: row.secretKey,
         }
       },
       editRobot() {
         Request.requestHandle({
-          url:'addTelegramBot',
-          data:{
-            "uid": this.uid(),
+          url: 'addTelegramBot',
+          data: {
+            "id": this.robotForm.id,
             "botId": this.robotForm.botId,
-            "botName": this.robotForm.botName,//"机器人名称",
-            "helloSet":this.robotForm.helloSet,// "打招呼语设置"
+            "botName": this.robotForm.botName,
+            "belongGroup": this.robotForm.botId,
+            "helloSet": this.robotForm.helloSet,
+            "belongAccount": this.robotForm.belongAccount,
+            "secretKey": this.robotForm.secretKey,
           },
-          type:'post',
-          flag:true
-        },res=>{
-          if(res.success==1){
-            this.message('新增成功','success')
+          type: 'post',
+          flag: true
+        }, res => {
+          if (res.success == 1) {
+            this.message('新增成功', 'success');
             this.RequestData()
           }
         })
       },
       closeDialog(val) {
-        console.log(val)
+        console.log(val);
         this.robotDialog = val
       },
 

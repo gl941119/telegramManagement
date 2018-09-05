@@ -34,15 +34,32 @@ Vue.prototype.message=function (info,type) {
     message:info,
     type:type
   })
+};
+Vue.prototype.confirm=function(){
+  return new Promise((resolve,reject)=>{
+    this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }).then(() => {
+      resolve()
+    }).catch(() => {
+        reject()
+    });
+  })
 }
+
+
+
 
 import Cache from './utils/cache';
 Vue.prototype.uid=function () {
   return Cache.getSession("userid") || store.state.uid
-}
+};
+
+
 
 //全局路由守卫
-
 router.beforeEach((to, from, next) => {
     let token = Cache.getSession('token');
     if (to.matched.some(record => record.meta.requiresAuth)) {
@@ -56,7 +73,7 @@ router.beforeEach((to, from, next) => {
     }
 });
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
 new Vue({
@@ -64,4 +81,4 @@ new Vue({
   router,
   store,
   render: h => h(App)
-})
+});

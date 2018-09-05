@@ -63,9 +63,6 @@
         }, {
           value: '365',
           label: '最近一年未登录'
-        }, {
-          value: '-1',
-          label: '收到消息未回复'
         }],
         value:undefined,
         groupOptions: [],
@@ -100,17 +97,16 @@
               "groupIds": this.groupValue, // 清理的群ID，如果只有一个元素-1则表示清理所有的群死号
               "day": this.value, // 最近几天未登录
             }
-          }
-          this.$emit('backData', 'CLEAN_ZOMBIE_GROUPS',info)
+          };
+          this.$emit('backData', 'CLEAN_ZOMBIE_GROUPS',info);
           this.dialogFormVisible = false;
         }
-
         if(this.differ === 'users'){
           let info = {
-            "dname": [this.selectTable[0].sn],
+            "dname": this.selectTable,
             "msg":this.value // 最近几天未登录，如果为"-1"则表示未回复消息
-          }
-          this.$emit('backData', 'CLEAN_ZOMBIE_CONTACTS',info)
+          };
+          this.$emit('backData', 'CLEAN_ZOMBIE_CONTACTS',info);
           this.dialogFormVisible = false;
         }
       }

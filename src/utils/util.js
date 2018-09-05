@@ -62,7 +62,7 @@ export default class Util {
         let d = new Date(item);
         let datetime=d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes();
         return datetime
-      })
+      });
       return val
     }
     random(n,m){

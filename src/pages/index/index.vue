@@ -2,7 +2,9 @@
 
   <el-container>
     <el-aside width="200px" class="aside">
-      <img src="@/assets/img/logo.png" alt="">
+
+      <img class="logo" src="@/assets/img/logo.png" alt="" style="margin-top: 6px;display: block;">
+
       <ul class="aside-ul">
         <router-link tag="li" :to="{name:'service'}" class="aside-ul-li">控制台</router-link>
         <router-link tag='li' :to="{name:'materialLibrary'}" class="aside-ul-li">素材管理</router-link>
@@ -40,11 +42,11 @@
     height: 100%;
     background-color: rgba(63, 63, 63, 1);
     > img {
-      width: 83px;
-      height: 83px;
+      width: 180px;
+      height: 50px;
     }
     &-ul {
-      margin-top: 30px;
+
       color: white;
       font-size: 20px;
       &-li:hover {

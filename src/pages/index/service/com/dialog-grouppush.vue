@@ -68,18 +68,21 @@
     methods: {
       //群消息推送
       groupNotificationPush(){
+
         let info = {
           "dname": [this.Message.sn],
           "msg": {
-            "text": this.Material.content,
+            "text": this.Material.text,
             "photo":this.Material.photo,
-            "video": this.Material.videoUrl,
+            "video": this.Material.video,
             "pushTo": {
               "group":this.Value, // 推送群对象，内容对应groupId，如果只有一个元素-1则表示推送全部的群
             },
           }
         };
+        console.log(this.Material)
         console.log('groupPush=>', info);
+
         this.$emit('backData','PUSH_MESSAGE_TO_SOMEONE',info);//传回
         this.dialogFormVisible = false
       },

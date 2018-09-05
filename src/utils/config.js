@@ -1,6 +1,6 @@
 const url = {
-    // localTestUrl: 'http://api.bierinc.com:9106/',
-    localTestUrl: 'http://192.168.1.15:9003/',
+    localTestUrl: 'http://api.bierinc.com:9106/',
+    // localTestUrl: 'http://192.168.1.15:9003/',
     productUrl: 'http://api.bierinc.com:9106/',
 };
 

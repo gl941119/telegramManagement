@@ -83,16 +83,16 @@
       classify() {
         switch (this.status) {
           case 'find':
-            this.url = 'queryAllByUserSid'
-            this.RequestTableData()
+            this.url = 'queryAllByUserSid';
+            this.RequestTableData();
             break;
           case 'bind':
-            this.url = 'queryselectNoBind'
-            this.RequestTableData()
+            this.url = 'queryselectNoBind';
+            this.RequestTableData();
             break;
           case 'phone':
-            this.url = 'getAccountByDeviceIdWithPage'
-            this.RequestPhoneData()
+            this.url = 'getAccountByDeviceIdWithPage';
+            this.RequestPhoneData();
             break;
 
           default:
@@ -110,7 +110,7 @@
           },
           type: 'get'
         }, res => {
-          this.tableData = res.data
+          this.tableData = res.data;
           this.total = res.total
         })
       },
@@ -126,7 +126,7 @@
           },
           type: 'get'
         }, res => {
-          this.tableData = res.data
+          this.tableData = res.data;
           this.total = res.total
         })
       },
@@ -135,7 +135,7 @@
         if (!this.multipleSelection) return;
         let ids = this.multipleSelection.map(item => {
           return item.id
-        })
+        });
 
         Request.requestHandle({
           url: 'amendbindDevices',
@@ -150,7 +150,7 @@
             this.$message({
               message: '绑定成功',
               type: 'success'
-            })
+            });
             this.RequestTableData()
           }
 
@@ -164,12 +164,12 @@
       },
       //分页
       handleCurrentChange(val) {
-        this.page = val
+        this.page = val;
         this.RequestTableData()
       },
       delfacility(row) {
         // console.log(row)
-        let params
+        let params;
         switch (this.status) {
           case 'find':
             params = {
@@ -179,7 +179,7 @@
                 userSid: row.userSid,//  子账户id
               },
               type: 'post',
-            }
+            };
             break;
           case 'phone':
             params={
@@ -190,7 +190,7 @@
               },
               type: 'post',
               flag: true
-            }
+            };
             break;
           default:
             return;
@@ -200,7 +200,7 @@
             this.$message({
               type: 'success',
               message: '删除成功'
-            })
+            });
             this.classify()
           }
 

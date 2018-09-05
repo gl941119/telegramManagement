@@ -63,6 +63,7 @@ export default{
   getMaterialWithId:'telegram/material/getMaterialWithId',//根据素材id获取素材详细信息
   getGroupBuiltWithConsole:'telegram/groupBuilt/getGroupBuiltWithConsole',//控制台 查询群管理 自建，群信息修改
   getGroupWithManage:'telegram/deviceGroups/getGroupWithManage',//根据uid 和手机号 获取所有(带有管理的)群信息(清理死号)
+  getGroupWithConsole:'telegram/groupMaterial/getGroupWithConsole',//加入群时
   //群管理自建
   chaogetGroupBuiltByUid:'telegram/groupBuilt/getAllGroupBuilt',//超管后台查询全部群管理 自建
   getGroupBuiltByUid:'telegram/groupBuilt/getGroupBuiltByUid',//根据运营账户id查询

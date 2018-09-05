@@ -121,7 +121,6 @@
         addressBook_selected: [],
         addressBook_page: 1,
         addressBook_pageSize: 10,
-
         group_tableData: [],//群
         group_selected: [],
         group_total: 0,
@@ -147,12 +146,20 @@
         let contact,  // 推送通讯录好友，内容对应userId，如果只有一个元素-1则表示推送全部通讯录好友
           dialog;     // 推送聊天窗口对象，内容对应userId，如果只有一个元素-1则表示推送全部的聊天窗口对象
         if (this.radio2 == '2') {
-          contact = this.ArraychangeObject(this.addressBook_selected).map(item => {
-            return item.userId
-          });
-          dialog = this.ArraychangeObject(this.group_selected).map(item => {
-            return item.userId
-          });
+          try {
+            contact = this.ArraychangeObject(this.addressBook_selected).map(item => {
+              return item.userId
+            });
+          }catch (e) {
+            contact = []
+          }
+          try{
+            dialog = this.ArraychangeObject(this.group_selected).map(item => {
+              return item.userId
+            });
+          }catch(err){
+            dialog=[]
+          }
         } else if (this.radio2 == '1') {
           contact = ['-1'];
           dialog = ['-1'];

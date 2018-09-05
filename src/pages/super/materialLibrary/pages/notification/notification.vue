@@ -247,30 +247,30 @@
           },
           type: 'get'
         }, res => {
-          this.tableData = res.data
+          this.tableData = res.data;
           this.total = res.total
         })
       },
       //打开编辑弹窗
       dialogEditMaterialBtn(row) {
-        console.log(row)
-        this.editStatus = true
-        this.dialogUpload = true
-        this.value1 = true
-        this.value2 = true
-        this.value3 = true
+        console.log(row);
+        this.editStatus = true;
+        this.dialogUpload = true;
+        this.value1 = true;
+        this.value2 = true;
+        this.value3 = true;
 
         // this.uploadForm.materialType = row.materialType==2 ? true:false;
         // console.log(row)
-        this.uploadForm = row
+        this.uploadForm = row;
         let {
           photo1Url,
           photo2Url,
           photo3Url
-        } = row
+        } = row;
         let arr = [photo1Url, photo2Url, photo3Url].filter(item => {
           return item
-        })
+        });
         this.fileList2 = arr.map(item => {
           return {
             name: "已上传图片.jpeg",
@@ -288,17 +288,17 @@
           content,
           videoUrl,
           materialType
-        } = this.uploadForm
+        } = this.uploadForm;
 
         let photoUrl = {
           photo1Url: undefined,
           photo2Url: undefined,
           photo3Url: undefined
-        }
+        };
 
         this.fileList2.forEach((item, index) => {
           photoUrl['photo' + (index + 1) + 'Url'] = item.url
-        })
+        });
         Request.requestHandle({
           url: 'updateMaterial',
           data: {
@@ -315,14 +315,14 @@
           type: 'post',
           flag: true
         }, res => {
-          this.dialogUpload = false
-          this.editStatus = false
+          this.dialogUpload = false;
+          this.editStatus = false;
           this.uploadForm = {
             title: undefined,
             content: undefined,
             videoUrl: undefined,
             materialType:false,
-          }
+          };
           this.fileList2 = []
         })
 
@@ -347,21 +347,21 @@
           content,
           videoUrl,
           materialType
-        } = this.uploadForm
+        } = this.uploadForm;
 
         let photoUrl = {
           photo1Url: undefined,
           photo2Url: undefined,
           photo3Url: undefined
-        }
+        };
         this.fileList2.forEach((item, index) => {
           photoUrl['photo' + (index + 1) + 'Url'] = item.response.data
-        })
+        });
         if (!title) {
           this.$message({
             message: '请输入标题',
             type: 'warning'
-          })
+          });
           return;
         }
         Request.requestHandle({
@@ -389,8 +389,8 @@
             content: undefined,
             videoUrl: undefined,
             materialType:false
-          }
-          this.fileList2 = []
+          };
+          this.fileList2 = [];
           this.requestData()
         })
       },
@@ -409,7 +409,7 @@
             this.$message({
               message: '修改成功',
               type: 'success'
-            })
+            });
             this.requestData()
           }
         })
@@ -417,7 +417,7 @@
       //删除
       deleteMaterial(row) {
         let ids = [];
-        ids.push(row.id)
+        ids.push(row.id);
         Request.requestHandle({
           url: 'deleteMaterial',
           data: {
@@ -431,7 +431,7 @@
             this.$message({
               message: '删除成功',
               type: 'success'
-            })
+            });
             this.requestData()
           }
 
@@ -446,17 +446,17 @@
       //分页数
       handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
-        this.pageSize = val
+        this.pageSize = val;
         this.requestData()
       },
       //翻页
       handleCurrentChange(val) {
         console.log(`当前页: ${val}`);
-        this.page = val
+        this.page = val;
         this.requestData()
       },
       tableSelect(selection, row) {//勾选
-        let cen = selection.length.toString()
+        let cen = selection.length.toString();
         this.alertMessage = `已选择 ${cen} 项`
       },
 

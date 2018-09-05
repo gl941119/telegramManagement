@@ -111,7 +111,7 @@
       },
       //打开dialog弹窗
       openDialog(row){
-        console.log(row)
+        console.log(row);
         this.queryId = row.id;
         this.dialogTableVisible = true;
 

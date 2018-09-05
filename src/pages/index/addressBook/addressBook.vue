@@ -142,7 +142,7 @@
           },
           type: 'get'
         }, res => {
-          this.total = res.total
+          this.total = res.total;
           this.tableData = res.data
         })
       },
@@ -167,7 +167,7 @@
              this.$message({
                type:'success',
                message:'新增成功'
-             })
+             });
              this.requestData()
            }
 
@@ -185,14 +185,14 @@
           this.$message({
             message:'上传成功',
             type:'success'
-          })
+          });
           this.requestData()
         }
 
 
       },
       handleCurrentChangehange(val) {
-        this.page = val
+        this.page = val;
         this.requestData()
       },
       handleSelectionChange(val) {
@@ -210,7 +210,7 @@
         this.requestData()
       },
       handleCurrentChangehangeGroup(val) {
-        this.queryGroudPage = val
+        this.queryGroudPage = val;
         this.queryGroupBtn()
       },
       rowClick(row, event, column) {

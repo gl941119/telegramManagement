@@ -29,12 +29,13 @@
 <script>
   import Cache from '@/utils/cache'
   import Request from '@/utils/require'
+
   export default {
     name: "dialog-clearLog",
-    props:['status'],
+    props: ['status'],
     data() {
       return {
-        userid:Cache.getSession("userid") || this.$store.state.uid,
+        userid: Cache.getSession("userid") || this.$store.state.uid,
         dialogFormVisible: false,
         radio: '1',
         value: 5,
@@ -53,7 +54,7 @@
         }, {
           value: 5,
           label: '一周以前'
-        },{
+        }, {
           value: 10,
           label: '清理全部'
         }],
@@ -69,23 +70,27 @@
       },
       // 清理日志
       clearLog() {
-        if(!this.status) return;
-        let url ;
-        if(this.status=='chat'){
-          url='clearChatRecord'
-        }else if(this.status == 'robot'){
-          url='clearChatLog'
-        }
-        Request.requestHandle({
-          url,
-          data: {
-            uid: 183,// 运营账号id
-            clearType: this.value
-          },
-          type: 'Post'
-        }, res => {
-          this.dialogFormVisible = false
-          this.$emit('RequestData','1')
+        this.confirm().then(t=>{
+          if (!this.status) return;
+          let url;
+          if (this.status == 'chat') {
+            url = 'clearChatRecord'
+          } else if (this.status == 'robot') {
+            url = 'clearChatLog'
+          }
+          Request.requestHandle({
+            url,
+            data: {
+              uid: 183,// 运营账号id
+              clearType: this.value
+            },
+            type: 'Post'
+          }, res => {
+            this.dialogFormVisible = false;
+            this.$emit('RequestData', '1')
+          })
+        }).catch(e=>{
+          this.dialogFormVisible = false;
         })
       }
     }
